@@ -1,5 +1,2 @@
 *.pyc
 .idea/*
-resources/video_data/*.webm
-results/gwr_based_approach/gwr_models_and_results/*
-!results/gwr_based_approach/gwr_models_and_results/crossval_90_30e/*
