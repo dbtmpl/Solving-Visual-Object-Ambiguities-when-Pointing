@@ -1,7 +1,7 @@
 # Implementation and Evaluation of a Deictic Gesture Interface with the NICO robot
 ### Supervisors and Examiners: [Dr. Doreen Jirak](https://www.inf.uni-hamburg.de/en/inst/ab/wtm/people/jirak.html "University of Hamburg - Website") and [Dr. Matthias Kerzel](https://www.inf.uni-hamburg.de/en/inst/ab/wtm/people/kerzel.html "University of Hamburg - Website")
 
-In my Bachelor's thesis I implemented an interface for deictic (pointing) gestures with the [NICO (Neuro-Inspired COmpanion)](https://www.inf.uni-hamburg.de/en/inst/ab/wtm/research/neurobotics/nico.html "University of Hamburg - Website")
+In my Bachelor's thesis I implemented an interface for recognizing deictic (pointing) gestures with the [NICO (Neuro-Inspired COmpanion)](https://www.inf.uni-hamburg.de/en/inst/ab/wtm/research/neurobotics/nico.html "University of Hamburg - Website")
 robot. In the scenario, the experimenter points to objects and NICO gives feedback on which object is currently being targeted. After implementing a *naive* solution using traditional computer-vision based methods, a [Growing When Required (GWR)](https://vision.unipv.it/IA2/aa2008-2009/A%20self-organising%20network%20that%20grows%20when%20required.pdf "Marsland et. al.") network is used to improve accuracy and enhance stability.
  
  

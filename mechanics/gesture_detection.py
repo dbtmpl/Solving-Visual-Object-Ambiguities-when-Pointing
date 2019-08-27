@@ -1,7 +1,7 @@
 import cv2 as cv
 import numpy as np
 import scipy.cluster.hierarchy as hcluster
-import object_detection as obj_d
+import mechanics.object_detection as obj_d
 
 
 def apply_skin_hist_3d(frame, skin_prob):
@@ -31,7 +31,7 @@ def get_biggest_contours(img, noise_thresh):
     im, contours, hierarchy = cv.findContours(img, cv.RETR_TREE, cv.CHAIN_APPROX_TC89_KCOS)
 
     # filter noise
-    contours = filter(lambda cnt_x: len(cnt_x) > noise_thresh, contours)
+    contours = list(filter(lambda cnt_x: len(cnt_x) > noise_thresh, contours))
 
     if contours:
         contours.sort(key=len, reverse=True)
@@ -396,7 +396,9 @@ def calc_and_clip_pointing_array(frame, p_3, fingertip, object_bb):
     inters = intersection(l1, l2)
 
     if inters:
-        cv.line(frame, tuple(p_3), inters, (0, 0, 255), 2)
+        p_3 = tuple(map(int, p_3))
+        inters = tuple(map(int, inters))
+        cv.line(frame, p_3, tuple(map(int, inters)), (0, 0, 255), 2)
         cv.circle(frame, inters, 4, [255, 255, 255], -1)
 
         gwr_angle = get_angle([0, fingertip[1]], inters, fingertip)

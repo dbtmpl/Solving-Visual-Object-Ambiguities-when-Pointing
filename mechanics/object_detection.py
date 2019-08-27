@@ -1,6 +1,6 @@
 import cv2 as cv
 import numpy as np
-import gesture_detection as gesture
+import mechanics.gesture_detection as gesture
 
 
 def find_yellow_object(frame, hand_positions):

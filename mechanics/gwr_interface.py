@@ -22,7 +22,7 @@ class GWRInterface(object):
 
         self.frame_dimensions = frame_dimensions
 
-        skin_prob_crcb_link = "resources/skin_color_data/histograms/skin_probabilities_crcb.npy"
+        skin_prob_crcb_link = "resources/skin_color_segmentation/saved_histograms/skin_probabilities_crcb.npy"
         thresh_crcb = 10
         self.skin_prob_binary_crcb = gesture.get_lab_skin_hist(thresh_crcb, skin_prob_crcb_link)
 
