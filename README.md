@@ -47,3 +47,5 @@ robot. In the scenario, the experimenter points to objects and NICO gives feedba
 <img width="80%" src="https://raw.githubusercontent.com/d4vidbiertmpl/Bachelors-thesis/master/demo_media/demo_images/union_of_bbs.png">
 
 ---
+
+### Further documentation will follow, in the meantime you are welcome to take a look at the thesis.
