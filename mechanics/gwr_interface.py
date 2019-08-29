@@ -21,6 +21,8 @@ class GWRInterface(object):
         self.x_b_l_value = int(np.ceil(self.number_nodes * 0.01) + 5)
 
         self.frame_dimensions = frame_dimensions
+        print("HERE SET FRAME DIMS")
+        print(self.frame_dimensions)
 
         skin_prob_crcb_link = "resources/skin_color_segmentation/saved_histograms/skin_probabilities_crcb.npy"
         thresh_crcb = 10
@@ -49,7 +51,7 @@ class GWRInterface(object):
 
             # here activate neighborhood approach or take 4 best nodes
             # neighborhood_labels = self.check_neighborhood(first_index)
-            x_best_labels = self.get_x_best_labels(distances, 20)
+            x_best_labels = self.get_x_best_labels(distances, 15)
             union_of_best = self.union_bounding_boxes(x_best_labels)
 
             return self.convert_bb_to_pxv(p_label), union_of_best, activation, x_best_labels

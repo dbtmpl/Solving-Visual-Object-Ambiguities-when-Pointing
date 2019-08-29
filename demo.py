@@ -38,8 +38,13 @@ def run_demo():
     # print(int(first_frame_shape[1] / 2))
     # print(first_frame_shape[0] / 2)
 
+    # resizing to correctly initialize GWR
+    complete_frame = cv.resize(first_frame, (int(first_frame_shape[1] / 2), int(first_frame_shape[0] / 2)))
+    first_frame = first_frame[0:crops_y, crops_x1:crops_x2]
+    first_frame = cv.resize(first_frame, (int((crops_x2 - crops_x1) / 2), int(crops_y / 2)))
+
     # initialize gwr for predicting
-    link_data_gwr = "results/gwr_based_approach/gwr_models_and_results/crossval_90_50e/0"
+    link_data_gwr = "results/gwr_based_approach/gwr_models_and_results/normalized_for_demo_90_30e/"
     gwr = GWRInterface(link_data_gwr, first_frame.shape)
 
     # for debugging purposes, saves binary images
@@ -139,9 +144,9 @@ def run_demo():
 
             # Show
             cv.imshow("original", frame)
-            cv.imshow("mask results", thresh)
+            # cv.imshow("mask results", thresh)
             # cv.imshow("blur", prep_steps[1])
-            cv.imshow("original binary", skin_binary)
+            # cv.imshow("original binary", skin_binary)
 
         else:
             cap.release()

@@ -512,6 +512,7 @@ def predict_gwr_pointing(frame, frame2, hand_contour, fingertip, hand_centroid, 
     norm_observation = gwr.normalize_live_observation(observation)
 
     gwr_prediction = gwr.predict_live(norm_observation)
+
     if gwr_prediction[0] is not None:
         bmu, union_of_best, activation, x_best_labels = gwr_prediction
 
@@ -527,7 +528,7 @@ def predict_gwr_pointing(frame, frame2, hand_contour, fingertip, hand_centroid, 
             cv.rectangle(frame, (bmu[0], bmu[1]), (bmu[2], bmu[3]), (0, 0, 255), 2)
             cv.rectangle(frame, (union_of_best[0], union_of_best[1]), (union_of_best[2], union_of_best[3]),
                          (0, 255, 255), 2)
-            # object_bb: 0: "object_color", 1: bb_wh, 2: bb])
+            # object_bb: 0: "object_color", 1: bb_wh, 2: bb
             for d_object in bounding_boxes:
                 bb = d_object[0]
                 cv.rectangle(frame, (bb[0], bb[1]), (bb[2], bb[3]), (255, 255, 255), 2)
@@ -535,6 +536,9 @@ def predict_gwr_pointing(frame, frame2, hand_contour, fingertip, hand_centroid, 
                 if iou > .5:
                     detection_text = "Pointing towards: " + d_object[1] + " (" + str(iou) + ")"
                     cv.putText(frame, detection_text, (10, 400), cv.FONT_HERSHEY_SIMPLEX, 1, (255, 255, 255), 1,
+                               cv.LINE_AA)
+                else:
+                    cv.putText(frame, "IoU < 0.5!", (200, 400), cv.FONT_HERSHEY_SIMPLEX, 1, (255, 255, 255), 2,
                                cv.LINE_AA)
 
             return frame, frame2
