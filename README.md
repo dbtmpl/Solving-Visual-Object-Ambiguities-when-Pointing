@@ -13,6 +13,7 @@ robot. In the scenario, the experimenter points to objects and NICO gives feedba
 <img width="40%"  src="https://raw.githubusercontent.com/d4vidbiertmpl/Bachelors-thesis/master/demo_media/demo_images/scenario_blueprint_2.png">
 
 <img width="42%" src="https://raw.githubusercontent.com/d4vidbiertmpl/Bachelors-thesis/master/demo_media/demo_images/scenario_blueprint_3.png">
+
 ---
 
 ## Recognition with naive solution
@@ -23,6 +24,7 @@ robot. In the scenario, the experimenter points to objects and NICO gives feedba
 ### Ambiguous
 <img align="left" width="46%"  src="https://raw.githubusercontent.com/d4vidbiertmpl/Bachelors-thesis/master/demo_media/demo_images/ambiguous_scene_naive_pointing_yellow.png">
 <img  width="46%"  src="https://raw.githubusercontent.com/d4vidbiertmpl/Bachelors-thesis/master/demo_media/demo_images/ambiguous_scene_naive_pointing_red.png">
+
 ---
 
 ## Recognition with GWR based solution
@@ -34,6 +36,7 @@ robot. In the scenario, the experimenter points to objects and NICO gives feedba
 ### Ambiguous
 <img align="left" width="46%"  src="https://raw.githubusercontent.com/d4vidbiertmpl/Bachelors-thesis/master/demo_media/demo_images/ambiguous_scene_gwr_pointing_yellow.jpg">
 <img  width="46%"  src="https://raw.githubusercontent.com/d4vidbiertmpl/Bachelors-thesis/master/demo_media/demo_images/ambiguous_scene_gwr_pointing_green.jpg">
+
 ---
 
 ## Ambiguity detection
@@ -42,4 +45,5 @@ robot. In the scenario, the experimenter points to objects and NICO gives feedba
 <img align="left" width="44%"  src="https://raw.githubusercontent.com/d4vidbiertmpl/Bachelors-thesis/master/demo_media/demo_images/amb_1.png">
 <img  width="44%"  src="https://raw.githubusercontent.com/d4vidbiertmpl/Bachelors-thesis/master/demo_media/demo_images/amb_2.jpg">
 <img width="80%" src="https://raw.githubusercontent.com/d4vidbiertmpl/Bachelors-thesis/master/demo_media/demo_images/union_of_bbs.png">
+
 ---
