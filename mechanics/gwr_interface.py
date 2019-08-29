@@ -12,7 +12,6 @@ class GWRInterface(object):
     def __init__(self, link_to_data, frame_dimensions):
         gwr = self.get_trained_gwr(link_to_data)
         self.weights, self.edges, self.labels, self.error = gwr
-        print(self.weights.shape)
 
         self.number_nodes = self.weights.shape[0]
         self.number_edges = self.get_no_edges()
@@ -21,8 +20,6 @@ class GWRInterface(object):
         self.x_b_l_value = int(np.ceil(self.number_nodes * 0.01) + 5)
 
         self.frame_dimensions = frame_dimensions
-        print("HERE SET FRAME DIMS")
-        print(self.frame_dimensions)
 
         skin_prob_crcb_link = "resources/skin_color_segmentation/saved_histograms/skin_probabilities_crcb.npy"
         thresh_crcb = 10
@@ -169,7 +166,6 @@ class GWRInterface(object):
                             [0, 0, 0, 0, 0]]
 
         for iteration in range(0, samples):
-            # print(iteration)
             observation = test_data[iteration]
             obs_label = test_labels[iteration]
             filename = side_data[iteration][0]

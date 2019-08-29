@@ -16,9 +16,9 @@ def run_demo():
     # Load video
     cap = cv.VideoCapture('resources/test_videos/amb1_o3_r1_m.webm')
 
-    # !!! Which approach !!!
-    # True: Computer Vision approach, False: GWR
-    # pointing_estimation = False
+    # Select approach:
+    #   True: Use Computer Vision approach
+    #   False: Use GWR
     pointing_estimation = False
 
     # three states are possible: State 0: None, State 1: One, State 2: Two
@@ -34,9 +34,6 @@ def run_demo():
     crops_y = int(first_frame_shape[0] - np.ceil((first_frame_shape[0] * 0.12037)))
     crops_x1 = int(np.ceil((first_frame_shape[1] * 0.3125)))
     crops_x2 = int(first_frame_shape[1] - np.ceil((first_frame_shape[1] * 0.3457)))
-
-    # print(int(first_frame_shape[1] / 2))
-    # print(first_frame_shape[0] / 2)
 
     # resizing to correctly initialize GWR
     complete_frame = cv.resize(first_frame, (int(first_frame_shape[1] / 2), int(first_frame_shape[0] / 2)))
@@ -129,8 +126,6 @@ def run_demo():
             # for saving frames for visualizations
             k = cv.waitKey(10)
             if k == 0x63 or k == 0x43:
-                print
-                'capturing!'
                 # cv.imwrite("resources/for_thesis/" + str(counter) + "complete_frame.jpg", complete_frame)
                 # cv.imwrite("resources/for_thesis/" + str(counter) + "orig_frame.jpg", orig_frame)
                 cv.imwrite("resources/for_thesis/" + str(frame_counter) + "frame.jpg", frame)

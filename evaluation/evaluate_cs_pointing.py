@@ -21,7 +21,6 @@ def calc_raw_confusion_data(data, side_data, dimensions):
     pointing_qualities_fp = []
 
     for iteration in range(0, sample_count):
-        print(iteration)
         observation = data[iteration]
         c_side_data = side_data[iteration]
         filename = c_side_data[0]
@@ -196,7 +195,8 @@ def print_outcome(pointing_quality, result_values):
 
 
 def results_to_latex_tabular(resuls):
-    print " \\\\\n".join([" & ".join(map(str, line)) for line in resuls])
+    print
+    " \\\\\n".join([" & ".join(map(str, line)) for line in resuls])
 
 
 def calculate_pointing(fingertip, p3, dimensions, d_objects):
@@ -258,4 +258,4 @@ if __name__ == "__main__":
 
     print_outcome(mean_pointing_qualities, prfm)
     results_to_latex_tabular(tp_fp)
-    results_to_latex_tabular((np.around(prfm, decimals=4)*100))
+    results_to_latex_tabular((np.around(prfm, decimals=4) * 100))

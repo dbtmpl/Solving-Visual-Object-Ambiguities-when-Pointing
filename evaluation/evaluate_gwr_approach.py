@@ -12,7 +12,6 @@ def train_gwr(tdata, tlabels, insertion_thresh, save_link):
     numberOfEpochs = 50  # Number of training epochs
     learningRateBMU = 0.1  # Learning rate of the best-matching unit (BMU)
     learningRateNeighbors = 0.01  # Learning rate of the BMU's topological neighbors
-    print(insertion_thresh)
 
     myAGWR = AssociativeGWR(tdata, tlabels, initNeurons, numberOfEpochs, insertion_thresh, learningRateBMU,
                             learningRateNeighbors)
@@ -301,24 +300,6 @@ def load_and_print_results(hyper_params):
                                label[i] + "-am-n" + "} \n \end{center}"
                 overall_tables2[i] = table_act_2
 
-    print(overall_tables[0][0])
-    print ""
-    print(overall_tables[0][1])
-    print ""
-    print(overall_tables[0][2])
-    print("")
-    print(overall_tables[1][0])
-    print ""
-    print(overall_tables2[0])
-    print ""
-    print(overall_tables[1][1])
-    print ""
-    print(overall_tables2[1])
-    print ""
-    print(overall_tables[1][2])
-    print ""
-    print(overall_tables2[2])
-
 
 def convert_to_latex(intersection_over_union, confusion_values, e, epoch):
     amb_c = ["$a_1$", "$a_2$", "$a_3$", "$a_4$"]
@@ -535,7 +516,6 @@ if __name__ == "__main__":
     #                 [[.85, .90, .95], [l_gwr + "/cross_85_50e/", l_gwr + "/cross_90_50e/", l_gwr + "/cross_95_50e/"]],
     #                 [[.85, .90, .95],
     #                  [l_gwr + "/cross_85_100e/", l_gwr + "/cross_90_100e/", l_gwr + "/cross_95_100e/"]]]
-
 
     # 85/90/95 is the activation threshold, XXe is the number of epochs
 

@@ -20,9 +20,6 @@ def apply_skin_hist2d(frame, skin_prob):
 
 def get_lab_skin_hist(thresh, link):
     skin_prob = np.load(link)
-    print(np.min(skin_prob))
-    print(np.max(skin_prob))
-    print(skin_prob.shape)
     return np.where(skin_prob > thresh, 255, 0)
 
 
