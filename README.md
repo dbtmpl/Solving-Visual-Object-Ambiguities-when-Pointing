@@ -10,15 +10,19 @@ robot. In the scenario, the experimenter points to objects and NICO gives feedba
 
 ## Scenario
 
+
 <img width="80%" src="https://raw.githubusercontent.com/d4vidbiertmpl/Bachelors-thesis/master/demo_media/demo_images/scenario_overview.png">
 
 <img align="left" width="32%" src="https://raw.githubusercontent.com/d4vidbiertmpl/Bachelors-thesis/master/demo_media/demo_images/scenario_blueprint_1.png">
 
-<img align="left" width="32%"  src="https://raw.githubusercontent.com/d4vidbiertmpl/Bachelors-thesis/master/demo_media/demo_images/scenario_blueprint_2.png">
+<img align="center" width="32%"  src="https://raw.githubusercontent.com/d4vidbiertmpl/Bachelors-thesis/master/demo_media/demo_images/scenario_blueprint_2.png">
 
 <img align="right" width="32%" src="https://raw.githubusercontent.com/d4vidbiertmpl/Bachelors-thesis/master/demo_media/demo_images/scenario_blueprint_3.png">
 
+&nbsp;
+
 ---
+
 
 ## Recognition with naive solution
 
@@ -28,7 +32,10 @@ robot. In the scenario, the experimenter points to objects and NICO gives feedba
 
 <img align="right" width="46%"  src="https://raw.githubusercontent.com/d4vidbiertmpl/Bachelors-thesis/master/demo_media/demo_images/simple_scene_naive_pointing_green.png">
 
+&nbsp;
+
 ---
+
 
 ### Ambiguous
 
@@ -36,7 +43,10 @@ robot. In the scenario, the experimenter points to objects and NICO gives feedba
 
 <img align="right" width="46%"  src="https://raw.githubusercontent.com/d4vidbiertmpl/Bachelors-thesis/master/demo_media/demo_images/ambiguous_scene_naive_pointing_red.png">
 
+&nbsp;
+
 ---
+
 
 ## Recognition with GWR based solution
 
@@ -46,7 +56,10 @@ robot. In the scenario, the experimenter points to objects and NICO gives feedba
 
 <img align="right" width="46%"  src="https://raw.githubusercontent.com/d4vidbiertmpl/Bachelors-thesis/master/demo_media/demo_images/simple_scene_gwr_pointing_green.png">
 
+&nbsp;
+
 ---
+
 
 ### Ambiguous
 
@@ -54,7 +67,10 @@ robot. In the scenario, the experimenter points to objects and NICO gives feedba
 
 <img align="right" width="46%"  src="https://raw.githubusercontent.com/d4vidbiertmpl/Bachelors-thesis/master/demo_media/demo_images/ambiguous_scene_gwr_pointing_green.jpg">
 
+&nbsp;
+
 ---
+
 
 ## Ambiguity detection
 
@@ -68,4 +84,7 @@ robot. In the scenario, the experimenter points to objects and NICO gives feedba
 
 <img width="80%" src="https://raw.githubusercontent.com/d4vidbiertmpl/Bachelors-thesis/master/demo_media/demo_images/union_of_bbs.png">
 
+&nbsp;
+
 ---
+
