@@ -18,6 +18,7 @@ robot. In the scenario, the experimenter points to objects and NICO gives feedba
 
 <img align="right" width="32%" src="https://raw.githubusercontent.com/d4vidbiertmpl/Bachelors-thesis/master/demo_media/demo_images/scenario_blueprint_3.png">
 
+---
 
 ## Recognition with naive solution
 
@@ -27,12 +28,15 @@ robot. In the scenario, the experimenter points to objects and NICO gives feedba
 
 <img align="right" width="46%"  src="https://raw.githubusercontent.com/d4vidbiertmpl/Bachelors-thesis/master/demo_media/demo_images/simple_scene_naive_pointing_green.png">
 
+---
+
 ### Ambiguous
 
 <img align="left" width="46%"  src="https://raw.githubusercontent.com/d4vidbiertmpl/Bachelors-thesis/master/demo_media/demo_images/ambiguous_scene_naive_pointing_yellow.png">
 
 <img align="right" width="46%"  src="https://raw.githubusercontent.com/d4vidbiertmpl/Bachelors-thesis/master/demo_media/demo_images/ambiguous_scene_naive_pointing_red.png">
 
+---
 
 ## Recognition with GWR based solution
 
@@ -42,11 +46,15 @@ robot. In the scenario, the experimenter points to objects and NICO gives feedba
 
 <img align="right" width="46%"  src="https://raw.githubusercontent.com/d4vidbiertmpl/Bachelors-thesis/master/demo_media/demo_images/simple_scene_gwr_pointing_green.png">
 
+---
+
 ### Ambiguous
 
 <img align="left" width="46%"  src="https://raw.githubusercontent.com/d4vidbiertmpl/Bachelors-thesis/master/demo_media/demo_images/ambiguous_scene_gwr_pointing_yellow.jpg">
 
 <img align="right" width="46%"  src="https://raw.githubusercontent.com/d4vidbiertmpl/Bachelors-thesis/master/demo_media/demo_images/ambiguous_scene_gwr_pointing_green.jpg">
+
+---
 
 ## Ambiguity detection
 
@@ -59,3 +67,5 @@ robot. In the scenario, the experimenter points to objects and NICO gives feedba
 <img align="right" width="44%"  src="https://raw.githubusercontent.com/d4vidbiertmpl/Bachelors-thesis/master/demo_media/demo_images/amb_2.jpg">
 
 <img width="80%" src="https://raw.githubusercontent.com/d4vidbiertmpl/Bachelors-thesis/master/demo_media/demo_images/union_of_bbs.png">
+
+---
