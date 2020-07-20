@@ -1,7 +1,7 @@
 import cv2 as cv
 import numpy as np
 import csv
-from mechanics import object_detection as obj_d, gesture_detection as gesture, state_model as state
+from engine import object_detection as obj_d, gesture_detection as gesture, state_model as state
 
 
 def calc_raw_confusion_data(data, side_data, dimensions):
@@ -14,7 +14,10 @@ def calc_raw_confusion_data(data, side_data, dimensions):
 
     # List of lists: 0: overall, 1-4 respective ambiguity class
     # In list 0. TP, 1. FP, 2. FN, 3. misses, 4. no intersections 5. total count
-    confusion_values = [[0, 0, 0, 0, 0, sample_count], [0, 0, 0, 0, 0, 0], [0, 0, 0, 0, 0, 0], [0, 0, 0, 0, 0, 0],
+    confusion_values = [[0, 0, 0, 0, 0, sample_count],
+                        [0, 0, 0, 0, 0, 0],
+                        [0, 0, 0, 0, 0, 0],
+                        [0, 0, 0, 0, 0, 0],
                         [0, 0, 0, 0, 0, 0]]
 
     pointing_qualities_tp = []
@@ -115,12 +118,8 @@ def calculate_results(confusion_values, pointing_quality):
         count = amb_class[-1]
         tp_count, fp_count, fn_count, misses_count, no_inters = amb_class[:-1]
         count -= no_inters
-        print(tp_count)
-        print(fn_count)
-        print(tp_count + fn_count)
         precision = float(tp_count) / (tp_count + fp_count)
         recall = float(tp_count) / (tp_count + fn_count)
-        print(recall)
         f1_score = 2 * ((precision * recall) / (precision + recall))
         misses = misses_count / float(count)
 
@@ -138,7 +137,6 @@ def calculate_results(confusion_values, pointing_quality):
 
 
 def save_results(results1, results2, pq, link):
-    print(results2)
     np.save(link + "/results/cs_tp_fp_fn_m", np.int32(results1))
     np.save(link + "/results/cs_p_r_f_m", np.float32(results2))
     np.save(link + "/results/cs_pointing_quality", np.float64(pq))
@@ -151,52 +149,8 @@ def save_raw_data(results, pq, link):
         writer.writerows(pq)
 
 
-def print_outcome(pointing_quality, result_values):
-    # in sublists0: TP, 1: FP. 2: FN, 3. Precision, 4, Recall, 5. F1-score, 6: Misses
-    print("Pointing qualities:")
-    print("TP Pointing qualities:")
-    print(pointing_quality[0])
-    print("")
-    print("FP Pointing qualities:")
-    print(pointing_quality[1])
-    print("")
-    print("OVERALL Pointing qualities:")
-    print(pointing_quality[2])
-    print("")
-
-    for i, results in enumerate(result_values):
-        print("ambiguity class: " + str(i))
-
-        print("TP: ")
-        print(results[0])
-        print("")
-        print("FP: ")
-        print(results[1])
-        print("")
-        print("FN: ")
-        print(results[2])
-        print("")
-        print("Misses count")
-        print(results[3])
-        # print("")
-        # print("Precision")
-        # print(results[4])
-        # print("")
-        # print("Recall")
-        # print(results[5])
-        # print("")
-        # print("F1_score")
-        # print(results[6])
-        # print("")
-        # print("Misses")
-        # print(results[7])
-        # print(" ")
-        # print(" ")
-
-
 def results_to_latex_tabular(resuls):
-    print
-    " \\\\\n".join([" & ".join(map(str, line)) for line in resuls])
+    print(" \\\\\n".join([" & ".join(map(str, line)) for line in resuls]))
 
 
 def calculate_pointing(fingertip, p3, dimensions, d_objects):
@@ -238,11 +192,10 @@ if __name__ == "__main__":
     data = np.load(link_data + "/data.npy")
     labels = np.load(link_data + "/labels.npy")
     side_data = list(csv.reader(open(link_data + "/side_data.csv", "rU"), delimiter=','))
-    print(data.shape)
 
     frame_dimensions = (950, 700)
-    # confusion_values, pq = calc_raw_confusion_data(data, side_data, frame_dimensions)
-    # save_raw_data(confusion_values, pq, link_data)
+    confusion_values, pq = calc_raw_confusion_data(data, side_data, frame_dimensions)
+    save_raw_data(confusion_values, pq, link_data)
 
     confusion_values = np.load(link_data + "/results/raw/raw_data.npy")
     pq = list(csv.reader(open(link_data + "/results/raw/raw_pq.csv", "rU"), delimiter=','))
@@ -256,6 +209,5 @@ if __name__ == "__main__":
     tp_fp = np.load(link_data + "/results/cs_tp_fp_fn_m.npy")
     prfm = np.load(link_data + "/results/cs_p_r_f_m.npy")
 
-    print_outcome(mean_pointing_qualities, prfm)
     results_to_latex_tabular(tp_fp)
     results_to_latex_tabular((np.around(prfm, decimals=4) * 100))

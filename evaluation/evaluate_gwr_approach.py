@@ -3,7 +3,7 @@ import numpy as np
 import cPickle
 
 from sklearn.model_selection import KFold
-from mechanics.gwr_interface import GWRInterface
+from engine.gwr_interface import GWRInterface
 from gwr_german.agwr_class import AssociativeGWR
 
 
@@ -34,7 +34,6 @@ def train_evaluate_gwr_k_fold(packed_data, hyper_params):
 
     kf = KFold(n_splits=3, random_state=13, shuffle=True)
     for i in range(0, 3):
-        print(i)
         q_ious_list = []
         q_confusion_values_list = []
 
@@ -42,7 +41,6 @@ def train_evaluate_gwr_k_fold(packed_data, hyper_params):
         a_confusion_values_list = []
 
         for j, indexes in enumerate(kf.split(data)):
-            print(j)
             train_index, test_index = indexes
             train_data = data[train_index]
             train_labels = labels[train_index]
@@ -62,7 +60,6 @@ def train_evaluate_gwr_k_fold(packed_data, hyper_params):
             save_results(q_ious, q_confusion_value, hyper_params[1][i] + str(j) + "/_q")
 
             a_ious, a_confusion_value = gwr.evaluate_gwr_with_amb_detection((test_data, test_labels, test_side_data))
-            print(a_confusion_value)
             a_ious_list.append(a_ious)
             a_confusion_values_list.append(a_confusion_value)
             save_results(a_ious, a_confusion_value, hyper_params[1][i] + str(j) + "/_a")
@@ -78,12 +75,6 @@ def train_evaluate_gwr_k_fold(packed_data, hyper_params):
         save_overall(q_iou_mean_kfold, q_confusion_values_mean_kfold, raw_values_q, "/_q", hyper_params[1][i])
         save_overall(a_iou_mean_kfold, a_confusion_values_mean_kfold, raw_values_a, "/_a", hyper_params[1][i])
 
-        # gwr.print_outcome(a_iou_mean_kfold, a_confusion_values_mean_k_fold)
-        # gwr.print_outcome(a_ious, a_confusion_value)
-
-        print(a_iou_mean_kfold)
-        print(a_confusion_values_mean_kfold)
-
 
 # Takes trained GWRs and evaluates them
 def evaluate_trained_networks(packed_data, hyper_params):
@@ -91,7 +82,6 @@ def evaluate_trained_networks(packed_data, hyper_params):
 
     kf = KFold(n_splits=3, random_state=13, shuffle=True)
     for i in range(0, 3):
-        print(i)
         q_ious_list = []
         q_confusion_values_list = []
 
@@ -99,7 +89,6 @@ def evaluate_trained_networks(packed_data, hyper_params):
         a_confusion_values_list = []
 
         for j, indexes in enumerate(kf.split(data)):
-            print(j)
             train_index, test_index = indexes
 
             test_data = data[test_index]
@@ -132,19 +121,9 @@ def evaluate_trained_networks(packed_data, hyper_params):
         save_overall(q_iou_mean_kfold, q_confusion_values_mean_kfold, raw_values_q, "/_q", hyper_params[1][i])
         save_overall(a_iou_mean_kfold, a_confusion_values_mean_kfold, raw_values_a, "/_a", hyper_params[1][i])
 
-        # gwr.print_outcome(a_iou_mean_kfold, a_confusion_values_mean_k_fold)
-        # gwr.print_outcome(a_ious, a_confusion_value)
-
-        print(a_iou_mean_kfold)
-        print(a_confusion_values_mean_kfold)
-
 
 # Calculates the mean of the cross validation folds. d_amb is a boolean to distinguish between cases (q vs. a).
 def calc_mean_of_k_fold(ious, confusion_values_list, d_amb):
-    # check saved data
-    print(len(confusion_values_list))
-    print(len(confusion_values_list[0]))
-
     means_iou = []
     for iou in ious:
         iou_mean = sum(iou) / len(iou)
@@ -164,8 +143,6 @@ def calc_mean_of_k_fold(ious, confusion_values_list, d_amb):
                                 [[], [], [], [], [], []]]
 
         for i, confusion_values in enumerate(confusion_values_list):
-            print("A")
-            print(confusion_values)
             for amb_c, amb_class in enumerate(confusion_values):
                 count = amb_class[-1]
                 tp_count, fp_count, fn_count, misses_count, correct_amb_count, f_noise = amb_class[:-1]
@@ -187,8 +164,6 @@ def calc_mean_of_k_fold(ious, confusion_values_list, d_amb):
                 mean_confusion_lists[amb_c][4].append(correct_amb)
                 mean_confusion_lists[amb_c][5].append(false_noise)
 
-        print(len(mean_confusion_lists[0][0]) == 3)
-
     else:
         # list of means of each fold
         # 0: overall, 1- 4 ambiguity classes
@@ -200,12 +175,7 @@ def calc_mean_of_k_fold(ious, confusion_values_list, d_amb):
                                 [[], [], [], []]]
 
         for i, confusion_values in enumerate(confusion_values_list):
-            print("Q")
-            print(confusion_values)
             for amb_c, amb_class in enumerate(confusion_values):
-                print(len(amb_class) == 5)
-                print(len(amb_class[:-1]) == 4)
-
                 count = amb_class[-1]
                 tp_count, fp_count, fn_count, misses_count = amb_class[:-1]
                 raw_values = [i, amb_c, tp_count, fp_count, fn_count, misses_count, count]
@@ -226,7 +196,6 @@ def calc_mean_of_k_fold(ious, confusion_values_list, d_amb):
     for amb_class_f in mean_confusion_lists:
         save_list = []
         for i in range(0, len(amb_class_f)):
-            print(len(amb_class_f[i]) == 3)
             mean = sum(amb_class_f[i]) / len(amb_class_f[i])
             std = np.std(np.asarray(amb_class_f[i], np.float64))
             save_list.append([mean, std])
@@ -265,7 +234,6 @@ def load_and_print_results(hyper_params):
                     ious = np.load(link + "mean" + e[1] + "/ious.npy")
                     confusion_values_list = np.load(link + "mean" + e[1] + "/confusion_values.npy")
                     raw_values = np.load(link + "mean" + e[1] + "/raw_values.npy")
-                    # print_outcome(ious, confusion_values_list, raw_values, e[1], epochs[j], at_info[i])
                     table, table2 = convert_to_latex(ious, confusion_values_list, e[0], epochs[j])
                     table_act += table
 
@@ -375,97 +343,6 @@ def convert_to_latex(intersection_over_union, confusion_values, e, epoch):
         table2 += total
 
         return table, table2
-
-
-# old function for printing results while evaluating
-def print_outcome(intersection_over_union, confusion_values, raw_values, e, epochs, at_info):
-    # in sublists 0: TP, 1: FP. 2: FN, 3. Precision, 4, Recall, 5. F1-score, 6: Misses, (7. correct..)
-    print("FINAL SCORE's of: " + e + " " + epochs + " " + at_info)
-
-    print(intersection_over_union)
-
-    print("OVERALL IOU:")
-    print(intersection_over_union[0])
-    print("std +- " + str(intersection_over_union[1]))
-    print(" ")
-
-    if e == "/_a":
-
-        for i, results in enumerate(confusion_values):
-            print("ambiguity class: " + str(i))
-
-            print("TP")
-            print(raw_values[i][2])
-            print("")
-            print("FP")
-            print(raw_values[i][3])
-            print("")
-            print("FN")
-            print(raw_values[i][4])
-            print("")
-            print("Misses")
-            print(raw_values[i][5])
-
-            print("Precision")
-            print(results[0][0])
-            print("std +- " + str(results[0][1]))
-            print("")
-            print("Recall")
-            print(results[1][0])
-            print("std +- " + str(results[1][1]))
-            print("")
-            print("F1_score")
-            print(results[2][0])
-            print("std +- " + str(results[2][1]))
-            print("")
-            print("Misses")
-            print(results[3][0])
-            print("std +- " + str(results[3][1]))
-            print("")
-            print("correct identified ambiguities")
-            print(results[4][0])
-            print("std +- " + str(results[4][1]))
-            print(" ")
-            print("falsely identified noise")
-            print(results[5][0])
-            print("std +- " + str(results[5][1]))
-            print(" ")
-            print(" ")
-
-    else:
-
-        for i, results in enumerate(confusion_values):
-            print("ambiguity class: " + str(i))
-
-            print("TP")
-            print(raw_values[i][2])
-            print("")
-            print("FP")
-            print(raw_values[i][3])
-            print("")
-            print("FN")
-            print(raw_values[i][4])
-            print("")
-            print("Misses")
-            print(raw_values[i][5])
-
-            print("Precision")
-            print(results[0][0])
-            print("std +- " + str(results[0][1]))
-            print("")
-            print("Recall")
-            print(results[1][0])
-            print("std +- " + str(results[1][1]))
-            print("")
-            print("F1_score")
-            print(results[2][0])
-            print("std +- " + str(results[2][1]))
-            print("")
-            print("Misses")
-            print(results[3][0])
-            print("std +- " + str(results[3][1]))
-            print(" ")
-            print(" ")
 
 
 # latex table for network details
