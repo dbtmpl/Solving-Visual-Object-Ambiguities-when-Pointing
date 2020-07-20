@@ -1,10 +1,10 @@
-import gesture_detection as gesture
+import engine.gesture_detection as gesture
 import cv2 as cv
 
 
 class GWR_Hand_Features(object):
     """
-    Get hand features for GWR feature vector
+     Get hand features for GWR feature vector
     """
 
     def __init__(self):

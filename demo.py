@@ -68,7 +68,7 @@ def run_demo(ARGS):
                         bb, color_str, color_int = d_object
                         cv.rectangle(frame, (bb[0], bb[1]), (bb[2], bb[3]), (0, 255, 0), 2, cv.LINE_AA)
                         object_bb.append(
-                            ["The " + color_str + " Object", (bb[0], bb[1], bb[2] - bb[0], bb[3] - bb[1]), bb])
+                            [color_str, (bb[0], bb[1], bb[2] - bb[0], bb[3] - bb[1]), bb])
 
             # Get initial skin binary
             skin_binary = gesture.apply_skin_hist2d(frame_ycrcb, skin_prob_binary_crcb)
@@ -111,8 +111,8 @@ def run_demo(ARGS):
 
             # for saving frames for visualizations
             k = cv.waitKey(10)
-            if k == 0x63 or k == 0x43:
-                cv.imwrite("resources/for_thesis/" + str(frame_counter) + "frame.jpg", frame)
+            if k == ord('p'):
+                cv.imwrite(f"frame_{frame_counter}.jpg", frame)
             frame_counter += 1
 
             # Show

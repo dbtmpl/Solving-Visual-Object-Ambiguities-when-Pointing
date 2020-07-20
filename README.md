@@ -1,35 +1,39 @@
-# Recognizing Deictic Gestures with Unsupervised Learning
-## Supervisors and Examiners: [Dr. Doreen Jirak](https://www.inf.uni-hamburg.de/en/inst/ab/wtm/people/jirak.html "University of Hamburg - Website") and [Dr. Matthias Kerzel](https://www.inf.uni-hamburg.de/en/inst/ab/wtm/people/kerzel.html "University of Hamburg - Website")
-**Official title: Implementation and Evaluation of a Deictic Gesture Interface with the NICO robot**
+# Solving visual object ambiguities when pointing: an unsupervised learning approach
+[![Python 3.8](https://img.shields.io/badge/Python-3.8-3776AB.svg?logo=python)](https://www.python.org/) [![OpenCV 4.3.0](https://img.shields.io/badge/opencv-4.3.0-brightgreen)](https://pytorch.org/docs/1.4.0/) [![MIT](https://img.shields.io/badge/License-MIT-3DA639.svg?logo=open-source-initiative)](LICENSE)
 
-I implemented an interface for recognizing deictic (pointing) gestures with the [NICO (Neuro-Inspired COmpanion)](https://www.inf.uni-hamburg.de/en/inst/ab/wtm/research/neurobotics/nico.html "University of Hamburg - Website")
-robot. In the scenario, the experimenter points to objects and NICO gives feedback on which object is currently targeted. After implementing a *naive* solution using traditional computer-vision based methods, a [Growing When Required (GWR)](https://vision.unipv.it/IA2/aa2008-2009/A%20self-organising%20network%20that%20grows%20when%20required.pdf "Marsland et. al.") network is used to improve accuracy and enhance stability.
 
-**Abstract:** In everyday interactions, people intuitively reference entities in their environment by pointing at them. These so-called deictic gestures allow directing other people's attention to a desired referent. In the field of Human-Robot-Interaction deictic gesture are of frequent interest as they enable people to apply familiar behavior to shift the robot's focus. However, despite being intuitive, deictic gestures possess an inherent ambiguity. Depending on the perspective and the target's proximity to other entities, the actual target of a deictic gesture may sometimes be difficult to identify, even for a human interaction partner. To this end, this thesis investigates whether we can create a natural deictic gesture interface with the humanoid robot NICO that is capable of recognizing a gesture's target also in ambiguous object constellations. In order to address this task we introduce two approaches: First, we approximate a pointing array from the hand posture of the experimenter. Subsequently, we predict the gesture's target by using a Growing When Required network (GWR). Finally, we create experimental set-ups to evaluate our approaches.
-
-Together we turned the thesis into the paper [Solving Visual Object Ambiguities when Pointing: An Unsupervised Learning Approach](https://arxiv.org/abs/1912.06449).
+This is the official implementation of the paper  
+> **[Solving visual object ambiguities when pointing: an unsupervised learning approach](https://link.springer.com/article/10.1007/s00521-020-05109-w) (Neural Computing and Applications 2020)**<br>
+> [Doreen Jirak]*(https://scholar.google.com/citations?user=-HgMDDYAAAAJ&hl), [David Biertimpel]†(https://www.linkedin.com/in/david-biertimpel/), [Matthias Kerzel]‡(https://www.inf.uni-hamburg.de/en/inst/ab/wtm/people/kerzel.html) and [Stefan Wermter]‡(https://www.inf.uni-hamburg.de/en/inst/ab/wtm/people/wermter.html) <br>
+> *Istituto Italiano di Tecnologia, †University of Amsterdam, ‡University of Hamburg<br>
+> pre-print : https://arxiv.org/abs/1912.06449
 
 ## Scenario
 <img width="80%" src="https://raw.githubusercontent.com/d4vidbiertmpl/Bachelors-thesis/master/demo_media/demo_images/scenario_overview.png">
-<img align="left" width="40%" src="https://raw.githubusercontent.com/d4vidbiertmpl/Bachelors-thesis/master/demo_media/demo_images/scenario_blueprint_1.png">
-<img width="40%"  src="https://raw.githubusercontent.com/d4vidbiertmpl/Bachelors-thesis/master/demo_media/demo_images/scenario_blueprint_2.png">
+<img align="left" width="46%"  src="https://raw.githubusercontent.com/d4vidbiertmpl/Bachelors-thesis/master/demo_media/demo_images/simple_scene_gwr_pointing_yellow.jpg">
+<img  width="46%"  src="https://raw.githubusercontent.com/d4vidbiertmpl/Bachelors-thesis/master/demo_media/demo_images/simple_scene_cv_pointing_green.jpg">
 
-<img width="42%" src="https://raw.githubusercontent.com/d4vidbiertmpl/Bachelors-thesis/master/demo_media/demo_images/scenario_blueprint_3.png">
 
----
+## <a name="Citing SVOAWP"></a> Citation
+For citing our paper please use the following BibTeX entry.
+```BibTeX
+@Article{Jirak2020,
+author={Jirak, Doreen
+and Biertimpel, David
+and Kerzel, Matthias
+and Wermter, Stefan},
+title={Solving visual object ambiguities when pointing: an unsupervised learning approach},
+journal={Neural Computing and Applications},
+year={2020},
+month={Jun},
+day={30},
+issn={1433-3058},
+doi={10.1007/s00521-020-05109-w},
+url={https://doi.org/10.1007/s00521-020-05109-w}
+}
+```
 
-## Recognition with naive solution
-### Unambiguous
-<img align="left" width="46%"  src="https://raw.githubusercontent.com/d4vidbiertmpl/Bachelors-thesis/master/demo_media/demo_images/simple_scene_naive_pointing_yellow.png">
-<img  width="46%"  src="https://raw.githubusercontent.com/d4vidbiertmpl/Bachelors-thesis/master/demo_media/demo_images/simple_scene_naive_pointing_green.png">
-
-### Ambiguous
-<img align="left" width="46%"  src="https://raw.githubusercontent.com/d4vidbiertmpl/Bachelors-thesis/master/demo_media/demo_images/ambiguous_scene_naive_pointing_yellow.png">
-<img  width="46%"  src="https://raw.githubusercontent.com/d4vidbiertmpl/Bachelors-thesis/master/demo_media/demo_images/ambiguous_scene_naive_pointing_red.png">
-
----
-
-## Recognition with GWR based solution
+## Recognition with GWR
 ### Unambiguous
 
 <img align="left" width="46%"  src="https://raw.githubusercontent.com/d4vidbiertmpl/Bachelors-thesis/master/demo_media/demo_images/simple_scene_gwr_pointing_red.png">
@@ -37,7 +41,19 @@ Together we turned the thesis into the paper [Solving Visual Object Ambiguities 
 
 ### Ambiguous
 <img align="left" width="46%"  src="https://raw.githubusercontent.com/d4vidbiertmpl/Bachelors-thesis/master/demo_media/demo_images/ambiguous_scene_gwr_pointing_yellow.jpg">
+<img  width="46%"  src=>
+
+---
+
+
+## Recognition with pointing array
+### Unambiguous
+<img align="left" width="46%"  src="https://raw.githubusercontent.com/d4vidbiertmpl/Bachelors-thesis/master/demo_media/demo_images/simple_scene_naive_pointing_yellow.png">
 <img  width="46%"  src="https://raw.githubusercontent.com/d4vidbiertmpl/Bachelors-thesis/master/demo_media/demo_images/ambiguous_scene_gwr_pointing_green.jpg">
+
+### Ambiguous
+<img align="left" width="46%"  src="https://raw.githubusercontent.com/d4vidbiertmpl/Bachelors-thesis/master/demo_media/demo_images/ambiguous_scene_naive_pointing_yellow.png">
+<img  width="46%"  src="https://raw.githubusercontent.com/d4vidbiertmpl/Bachelors-thesis/master/demo_media/demo_images/ambiguous_scene_naive_pointing_red.png">
 
 ---
 
@@ -50,4 +66,5 @@ Together we turned the thesis into the paper [Solving Visual Object Ambiguities 
 
 ---
 
-### Further documentation will follow, in the meantime you are welcome to take a look at the thesis.
+Disclaimer: The code on which this work is based was developed during my bachelor thesis in summer 2018.
+

@@ -414,9 +414,9 @@ def calc_and_clip_pointing_array(frame, p_3, fingertip, object_bb):
 
             if probabilities:
                 probabilities = sorted(probabilities, key=lambda x: x[1])
-                detection_text = "Pointing towards: " + probabilities[0][1] + " (" + str(
-                    round(probabilities[0][0], 2)) + ")"
-                cv.putText(frame, detection_text, (10, 400), cv.FONT_HERSHEY_SIMPLEX, 1, (255, 255, 255), 1, cv.LINE_AA)
+                # detection_text = f"Pointing towards: {probabilities[0][1]} ({round(probabilities[0][0], 2)})"
+                detection_text = f"Pointing towards: {probabilities[0][1]}"
+                cv.putText(frame, detection_text, (10, 400), cv.FONT_HERSHEY_SIMPLEX, 1, (0, 0, 255), 2, cv.LINE_AA)
 
                 return frame
 
@@ -531,12 +531,10 @@ def predict_gwr_pointing(frame, frame2, hand_contour, fingertip, hand_centroid, 
                 cv.rectangle(frame, (bb[0], bb[1]), (bb[2], bb[3]), (255, 255, 255), 2)
                 iou = gwr.calc_iou(bb, bmu)
                 if iou > .5:
-                    detection_text = "Pointing towards: " + d_object[1] + " (" + str(iou) + ")"
-                    cv.putText(frame, detection_text, (10, 400), cv.FONT_HERSHEY_SIMPLEX, 1, (255, 255, 255), 1,
-                               cv.LINE_AA)
+                    detection_text = f"Pointing towards: {d_object[1]} ({iou})"
+                    cv.putText(frame, detection_text, (10, 400), cv.FONT_HERSHEY_SIMPLEX, 1, (0, 0, 255), 2, cv.LINE_AA)
                 else:
-                    cv.putText(frame, "IoU < 0.5!", (200, 400), cv.FONT_HERSHEY_SIMPLEX, 1, (255, 255, 255), 2,
-                               cv.LINE_AA)
+                    cv.putText(frame, "IoU < 0.5!", (10, 400), cv.FONT_HERSHEY_SIMPLEX, 1, (0, 0, 255), 2, cv.LINE_AA)
 
             return frame, frame2
         else:
@@ -544,13 +542,13 @@ def predict_gwr_pointing(frame, frame2, hand_contour, fingertip, hand_centroid, 
                 # cv.rectangle(frame2, (union_of_best[0], union_of_best[1]), (union_of_best[2], union_of_best[3]),
                 #              (0, 255, 255), 2)
                 d_object = bounding_boxes[0]
-                detection_text = "Pointing towards: " + d_object[1]
+                detection_text = f"Pointing towards: {d_object[1]}"
                 cv.putText(frame, detection_text, (10, 400), cv.FONT_HERSHEY_SIMPLEX, 1, (0, 0, 255), 2, cv.LINE_AA)
                 return frame, frame2
 
             else:
                 detection_text = "No pointing without a target"
-                cv.putText(frame, detection_text, (10, 400), cv.FONT_HERSHEY_SIMPLEX, 1, (255, 255, 255), 2, cv.LINE_AA)
+                cv.putText(frame, detection_text, (10, 400), cv.FONT_HERSHEY_SIMPLEX, 1, (0, 0, 255), 2, cv.LINE_AA)
                 return frame, frame2
     else:
         cv.putText(frame, "ACTIVATION LOW " + str(gwr_prediction[1]), (10, 400), cv.FONT_HERSHEY_SIMPLEX, 1,
