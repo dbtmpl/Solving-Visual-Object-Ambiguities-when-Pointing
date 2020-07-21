@@ -13,7 +13,7 @@ This repository provides the official implementation of the paper
 Whenever we are addressing a specific object or refer to a certain spatial location, we are using referential or deictic gestures usually accompanied by some verbal description. Particularly, pointing gestures are necessary to dissolve ambiguities in a scene and they are of crucial importance when verbal communication may fail due to environmental conditions or when two persons simply do not speak the same language. With the currently increasing advances of humanoid robots and their future integration in domestic domains, the development of gesture interfaces complementing human–robot interaction scenarios is of substantial interest. The implementation of an intuitive gesture scenario is still challenging because both the pointing intention and the corresponding object have to be correctly recognized in real time. The demand increases when considering pointing gestures in a cluttered environment, as is the case in households. Also, humans perform pointing in many different ways and those variations have to be captured. Research in this field often proposes a set of geometrical computations which do not scale well with the number of gestures and objects and use specific markers or a predefined set of pointing directions. In this paper, we propose an unsupervised learning approach to model the distribution of pointing gestures using a growing-when-required (GWR) network. We introduce an interaction scenario with a humanoid robot and define the so-called ambiguity classes. Our implementation for the hand and object detection is independent of any markers or skeleton models; thus, it can be easily reproduced. Our evaluation comparing a baseline computer vision approach with our GWR model shows that the pointing-object association is well learned even in cases of ambiguities resulting from close object proximity.
 
 ## Usage
-The `demo.py` comes with only a few arguments namely       
+The `demo.py` comes with a few parameters       
 ```Parameters
 --gwr-model             Path to the GWR model. Not used when using pointing-array for prediction.
 --skin-model            Path to the skin-color model used for hand detection.
@@ -21,8 +21,8 @@ The `demo.py` comes with only a few arguments namely
 --use-pointing-array    If set, the pointing array approach is used. By default, the GWR network is used.
 ```
 
-Default parameters are put in place so just running `python demo.py` for the GWR- and `python demo.py --use-pointing-array` for the pointing-array based approach is possible. The rest of the parameters can be specified as follows:
-```
+The Default parameters put in place allow running `python demo.py` for the GWR- and `python demo.py --use-pointing-array` for the pointing-array based approach. A demo run with all parameters specified looks as follows:
+```Example-run
 python demo.py --gwr-model "results/gwr_based_approach/gwr_models_and_results/normalized_for_demo_90_30e/" \
                --skin-model "resources/skin_color_segmentation/saved_histograms/skin_probabilities_crcb.npy" \
                --demo-video "resources/test_videos/amb1_o3_r1_m.webm" \
