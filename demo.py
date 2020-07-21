@@ -23,10 +23,10 @@ def crop_and_resize(frame, crops_y, crops_x1, crops_x2):
 
 
 def run_demo(ARGS):
-    skin_prob_binary_crcb = gesture.get_lab_skin_hist(ARGS.thresh_crcb, ARGS.skin_model_path)
+    skin_prob_binary_crcb = gesture.get_lab_skin_hist(thresh=10, path=ARGS.skin_model)
 
     # Load video
-    cap = cv.VideoCapture(ARGS.demo_video_path)
+    cap = cv.VideoCapture(ARGS.demo_video)
 
     pointing_estimation = ARGS.use_pointing_array
 
@@ -41,8 +41,8 @@ def run_demo(ARGS):
     first_frame = crop_and_resize(first_frame, crops_y, crops_x1, crops_x2)
 
     # initialize gwr for predicting
-    link_data_gwr = "results/gwr_based_approach/gwr_models_and_results/normalized_for_demo_90_30e/"
-    gwr = GWRInterface(link_data_gwr, first_frame.shape)
+    path_gwr = ARGS.gwr_model
+    gwr = GWRInterface(path_gwr, first_frame.shape)
 
     # 2D list: stores the last 5 values of hand features for calculating the mean
     # 1. fingertip, 2. p3, 3. gwr_angle
@@ -128,22 +128,22 @@ if __name__ == '__main__':
 
     # General
     parser.add_argument(
-        '--skin-model-path',
+        '--gwr-model',
+        type=str,
+        default="results/gwr_based_approach/gwr_models_and_results/normalized_for_demo_90_30e/",
+        help="Path to the GWR model (Not used when using pointing array for prediction)"
+    )
+    parser.add_argument(
+        '--skin-model',
         type=str,
         default="resources/skin_color_segmentation/saved_histograms/skin_probabilities_crcb.npy",
-        help="Path for skin-color model."
+        help="Path to the skin-color model used for hand detection."
     )
     parser.add_argument(
-        '--demo-video-path',
+        '--demo-video',
         type=str,
         default="resources/test_videos/amb1_o3_r1_m.webm",
-        help="Path to demo video."
-    )
-    parser.add_argument(
-        '--thresh-crcb',
-        type=int,
-        default=10,
-        help="Heuristic threshold for the skin color model."
+        help="Path to the demo video."
     )
     parser.add_argument(
         '--use-pointing-array',
@@ -153,4 +153,3 @@ if __name__ == '__main__':
 
     ARGS = parser.parse_args()
     run_demo(ARGS)
-

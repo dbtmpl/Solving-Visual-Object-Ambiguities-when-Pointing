@@ -18,8 +18,8 @@ def apply_skin_hist2d(frame, skin_prob):
     return np.uint8(skin_area_orig)
 
 
-def get_lab_skin_hist(thresh, link):
-    skin_prob = np.load(link)
+def get_lab_skin_hist(thresh, path):
+    skin_prob = np.load(path)
     return np.where(skin_prob > thresh, 255, 0)
 
 
