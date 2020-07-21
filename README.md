@@ -1,5 +1,5 @@
 # Solving visual object ambiguities when pointing: an unsupervised learning approach
-[![Python 3.8](https://img.shields.io/badge/Python-3.8-3776AB.svg?logo=python)](https://www.python.org/) [![NumPy 1.18.5](https://img.shields.io/badge/NumPy-1.18.5-blue)](https://numpy.org/doc/1.18/) [![OpenCV 4.3.0](https://img.shields.io/badge/opencv-4.3.0-brightgreen)](https://docs.opencv.org/4.3.0/) [![MIT](https://img.shields.io/badge/License-MIT-3DA639.svg?logo=open-source-initiative)](LICENSE)
+[![Python 3.8](https://img.shields.io/badge/Python-3.8-3776AB.svg?logo=python)](https://www.python.org/) [![NumPy 1.18.5](https://img.shields.io/badge/NumPy-1.18.5-blue)](https://numpy.org/doc/1.18/) [![OpenCV 4.3.0](https://img.shields.io/badge/OpenCV-4.3.0-brightgreen)](https://docs.opencv.org/4.3.0/) [![MIT](https://img.shields.io/badge/License-MIT-3DA639.svg?logo=open-source-initiative)](LICENSE)
 
 This repository provides the official implementation of the paper:
 > **[Solving visual object ambiguities when pointing: an unsupervised learning approach](https://link.springer.com/article/10.1007/s00521-020-05109-w) (Neural Computing and Applications 2020)**<br>
@@ -21,7 +21,7 @@ The `demo.py` comes with a few parameters:
 --use-pointing-array    If set, the pointing array approach is used. By default, the GWR network is used.
 ```
 
-The Default parameters put in place allow running `python demo.py` for the GWR- and `python demo.py --use-pointing-array` for the pointing-array based approach. A demo run with all parameters specified looks as follows:
+The default parameters put in place allow running `python demo.py` for the GWR- and `python demo.py --use-pointing-array` for the pointing-array based approach. A demo run with all parameters specified looks as follows:
 ```Example-run
 python demo.py --gwr-model "results/gwr_based_approach/gwr_models_and_results/normalized_for_demo_90_30e/" \
                --skin-model "resources/skin_color_segmentation/saved_histograms/skin_probabilities_crcb.npy" \
@@ -29,9 +29,11 @@ python demo.py --gwr-model "results/gwr_based_approach/gwr_models_and_results/no
                --use-pointing-array             
 ```
 
-Here an impression how the run after executing the command should look like:
+Below an impression how the run after executing the commands should look like (left: GWR based pointing, right: pointing with a poining-array).
+
 <img align="left" width="46%"  src="https://raw.githubusercontent.com/d4vidbiertmpl/Bachelors-thesis/master/demo_media/demo_images/simple_scene_gwr_pointing_yellow.jpg">
 <img  width="46%"  src="https://raw.githubusercontent.com/d4vidbiertmpl/Bachelors-thesis/master/demo_media/demo_images/simple_scene_cv_pointing_green.jpg">
+
 
 ## Dependencies
 The deictic gesture recognition is entirely based on NumPy, OpenCV and occasional SciPy functions. The full dependencies can be viewed in the `environment.yml`.
