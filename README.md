@@ -30,8 +30,10 @@ python demo.py --gwr-model "results/gwr_based_approach/gwr_models_and_results/no
 ```
 
 Below an impression how the run after executing the commands should look like (left: GWR based pointing, right: pointing with a poining-array).
+
 <img align="left" width="46%"  src="https://raw.githubusercontent.com/d4vidbiertmpl/Bachelors-thesis/master/demo_media/demo_images/simple_scene_gwr_pointing_yellow.jpg">
 <img  width="46%"  src="https://raw.githubusercontent.com/d4vidbiertmpl/Bachelors-thesis/master/demo_media/demo_images/simple_scene_cv_pointing_green.jpg">
+
 
 ## Dependencies
 The deictic gesture recognition is entirely based on NumPy, OpenCV and occasional SciPy functions. The full dependencies can be viewed in the `environment.yml`.
