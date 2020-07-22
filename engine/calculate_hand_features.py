@@ -7,11 +7,8 @@ class GWR_Hand_Features(object):
      Get hand features for GWR feature vector
     """
 
-    def __init__(self):
-
-        skin_prob_crcb_link = "resources/skin_color_data/histograms/skin_probabilities_crcb.npy"
-        thresh_crcb = 20
-        self.skin_prob_binary_crcb = gesture.get_lab_skin_hist(thresh_crcb, skin_prob_crcb_link)
+    def __init__(self, skin_model_path):
+        self.skin_prob_binary_crcb = gesture.get_skin_histogram(skin_model_path, thresh=20)
 
     def handle_angle_list(self, angle, list):
         if len(list) < 5:

@@ -10,15 +10,11 @@ from engine.calculate_hand_features import GWR_Hand_Features
 
 class RecordGWRData(object):
     def __init__(self):
-
-        self.gwr_hf = GWR_Hand_Features()
+        skin_model_path = "resources/skin_color_data/histograms/skin_probabilities_crcb.npy"
+        self.gwr_hf = GWR_Hand_Features(skin_model_path)
 
         self.data = self.load_video_data()
         self.data_labels = self.load_labels()
-
-        print(len(self.data))
-        print(len(self.data_labels))
-
         self.crops = self.get_crops()
 
     @staticmethod

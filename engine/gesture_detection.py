@@ -5,27 +5,50 @@ import engine.object_detection as obj_d
 
 
 def apply_skin_hist_3d(frame, skin_prob):
+    """
+    Apply probabilistic skin model represented as a 3D histogram to a video frame
+    :param frame: current video frame
+    :param skin_prob: skin color model
+    :return: Pixels in the frame that the model considers to be skin
+    """
     x, y, z = cv.split(frame)
     B = skin_prob[x.ravel(), y.ravel(), z.ravel()]
-    skin_area_orig = B.reshape(frame.shape[:2])
-    return np.uint8(skin_area_orig)
+    skin_area = B.reshape(frame.shape[:2])
+    return np.uint8(skin_area)
 
 
 def apply_skin_hist2d(frame, skin_prob):
+    """
+    Apply probabilistic skin model represented as a 2D histogram to a video frame
+    :param frame: current video frame
+    :param skin_prob: skin color model
+    :return: Pixels in the frame that the model considers to be skin
+    """
     x, y, z = cv.split(frame)
     B = skin_prob[y.ravel(), z.ravel()]
-    skin_area_orig = B.reshape(frame.shape[:2])
-    return np.uint8(skin_area_orig)
+    skin_area = B.reshape(frame.shape[:2])
+    return np.uint8(skin_area)
 
 
-def get_lab_skin_hist(thresh, path):
+def get_skin_histogram(path, thresh=10):
+    """
+    Returns a skin color histogram given a path and a threshold value.
+    :param thresh: Empirical threshold for the learned skin probabilities
+    :param path: Path to the skin color model
+    :return:
+    """
     skin_prob = np.load(path)
     return np.where(skin_prob > thresh, 255, 0)
 
 
-# used for detecting the objects as well
-def get_biggest_contours(img, noise_thresh):
-    contours, hierarchy = cv.findContours(img, cv.RETR_TREE, cv.CHAIN_APPROX_TC89_KCOS)
+def get_biggest_contours(frame, noise_thresh):
+    """
+    Returns the biggest contour in a given video frame.
+    :param frame: Current frame in the video
+    :param noise_thresh: Empirical threshold for filtering noise.
+    :return: List of biggest contour.
+    """
+    contours, hierarchy = cv.findContours(frame, cv.RETR_TREE, cv.CHAIN_APPROX_TC89_KCOS)
 
     # filter noise
     contours = list(filter(lambda cnt_x: len(cnt_x) > noise_thresh, contours))
@@ -37,9 +60,10 @@ def get_biggest_contours(img, noise_thresh):
     return None
 
 
-# For detecting two hands, however in the scenes where just one hand is present, the red object might get confused with
-# a hand
 def get_biggest_two_contours(img, noise_thresh):
+    """
+    See get_biggest_contours
+    """
     im, contours, hierarchy = cv.findContours(img, cv.RETR_TREE, cv.CHAIN_APPROX_TC89_KCOS)
 
     if contours:
@@ -59,81 +83,14 @@ def get_biggest_two_contours(img, noise_thresh):
         return None
 
 
-def get_contour_centroid(cnt):
-    m = cv.moments(cnt)
+def get_contour_centroid(contour):
+    """
+    Returns the centroid of a given contour
+    :param contour: contour
+    :return: centroid
+    """
+    m = cv.moments(contour)
     return int(m['m10'] / m['m00']), int(m['m01'] / m['m00'])
-
-
-def draw_convex_hull(hull_points, frame):
-    for point in hull_points:
-        point = point.flatten()
-        cv.circle(frame, (point[0], point[1]), 2, [255, 255, 255], -1)
-
-    return frame
-
-
-def draw_hull_with_defects(right_defects, frame):
-    for i in range(len(right_defects)):
-        sp, pe, pd, ld = right_defects[i]
-
-        cv.line(frame, sp, pe, [255, 100, 255], 2)
-        cv.line(frame, sp, pd, [25, 100, 255], 2)
-        cv.line(frame, pe, pd, [25, 100, 255], 2)
-        cv.circle(frame, pd, 2, [0, 0, 255], -1)
-        cv.circle(frame, sp, 2, [0, 255, 0], -1)
-        cv.circle(frame, pe, 2, [255, 0, 0], -1)
-        cv.putText(frame, str(i), pd, cv.FONT_HERSHEY_SIMPLEX, 1, [0, 0, 255], 1)
-
-    return frame
-
-
-def draw_fingertips(frame, hands):
-    for hand in hands:
-        for i in range(hand[0].shape[0]):
-            cv.circle(frame, tuple(hand[0][i]), 2, [0, 255, 0], -1)
-            cv.circle(frame, tuple(hand[1][i][2]), 2, [0, 255, 0], -1)
-            # cv.line(frame, tuple(hand[1][i][2]), tuple(hand[0][i]), (255, 0, 0), 1)
-            return frame
-
-
-def draw_convex_defects(frame, hands):
-    for hand in hands:
-        defects = hand[3]
-        for defect in defects:
-            cs = hand[4][defect[0][0]].flatten()
-            ce = hand[4][defect[0][1]].flatten()
-            cf = hand[4][defect[0][2]].flatten()
-            cv.circle(frame, tuple(cs), 2, [0, 255, 0], -1)
-            cv.circle(frame, tuple(ce), 2, [0, 255, 0], -1)
-            cv.circle(frame, tuple(cf), 2, [0, 255, 0], -1)
-            cv.line(frame, tuple(cs), tuple(cf), (0, 0, 255), 2)
-            cv.line(frame, tuple(ce), tuple(cf), (0, 0, 255), 2)
-
-    return frame
-
-
-def calc_and_draw_circles(frame, hands, centroids):
-    ras = []
-    rbs = []
-
-    for i, hand in enumerate(hands):
-        # min inscribed circle
-        ra = int(cv.pointPolygonTest(hand, centroids[i], True))
-        ras.append(ra)
-
-        if ra > 0:
-            cv.circle(frame, centroids[i], ra, [255, 255, 255], 1)
-
-        # min enclosing circle
-        (ecx, ecy), rb = cv.minEnclosingCircle(hand)
-        center = (int(ecx), int(ecy))
-        rb = int(rb)
-        rbs.append(rb)
-
-        if rb > 0:
-            cv.circle(frame, center, rb, [255, 255, 255], 2)
-
-    return frame, ras, rbs
 
 
 def filter_defects_and_hull(cnt):
@@ -365,26 +322,39 @@ def calc_tracking_roi(source, target, padding, bounds):
     return target
 
 
-# calcs line from two points and returns a, b, c from formula: ax + by = c
+#
 def calc_line(p1, p2):
+    """
+    Calculates line from two points p1 and p2 by
+    returning a, b, c from line formula ax + by = c
+    :param p1: point 1, represented as x, y coordinates
+    :param p2: point 2, represented as x, y coordinates
+    :return: a, b, -c from line formula ax + by = c
+    """
     a = (p1[1] - p2[1])
     b = (p2[0] - p1[0])
     c = (p1[0] * p2[1] - p2[0] * p1[1])
     return a, b, -c
 
 
-# l1 and l2 each represent a line by containing the params a(l[0]), b(l[1]), -c[l2]
-# The intersection can be found by calculating determinants d, dx and dy
 def intersection(l1, l2):
+    """
+    Determines the intersection between two lines l1 and l2.
+    l1 and l2 each represent a line with line formula ax + by = c, where a: l[0], b: l[1], c: -l[2]
+    The intersection can be found by calculating determinants d, dx and dy
+    :param l1: line 1
+    :param l2: line 2
+    :return: Intersection x, y
+    """
     d = l1[0] * l2[1] - l1[1] * l2[0]
     dx = l1[2] * l2[1] - l1[1] * l2[2]
     dy = l1[0] * l2[2] - l1[2] * l2[0]
-    if d != 0:
-        x = dx / d
-        y = dy / d
-        return x, y
-    else:
+
+    if d == 0:
         return False
+    x = dx / d
+    y = dy / d
+    return x, y
 
 
 def calc_and_clip_pointing_array(frame, p_3, fingertip, object_bb):

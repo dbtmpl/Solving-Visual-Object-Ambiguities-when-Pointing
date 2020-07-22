@@ -182,4 +182,4 @@ def normalize_histogram(hist_old):
 if __name__ == "__main__":
     train_crcb_2d_hist()
     skin_prob_crcb_link = "resources/skin_color_data/histograms/skin_probabilities_crcb.npy"
-    skin_prob_binary_crcb = gesture.get_lab_skin_hist(thresh_crcb, skin_prob_crcb_link)
+    skin_prob_binary_crcb = gesture.get_skin_histogram(skin_prob_crcb_link)

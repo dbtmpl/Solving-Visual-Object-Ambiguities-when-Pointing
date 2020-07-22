@@ -9,28 +9,22 @@ from engine import object_detection as obj_d, gesture_detection as gesture, stat
 
 
 class GWRInterface(object):
-    def __init__(self, link_to_data, frame_dimensions):
-        gwr = self.get_trained_gwr(link_to_data)
+    def __init__(self, model_path, skin_model_path, frame_dims):
+        self.frame_dims = frame_dims
+        self.skin_model = gesture.get_skin_histogram(skin_model_path)
+
+        gwr = self.get_trained_gwr(model_path)
         self.weights, self.edges, self.labels, self.error = gwr
-
         self.number_nodes = self.weights.shape[0]
-        self.number_edges = self.get_no_edges()
-        self.aT = .5
-
+        self.number_edges = self.count_edges()
         self.x_b_l_value = int(np.ceil(self.number_nodes * 0.01) + 5)
-
-        self.frame_dimensions = frame_dimensions
-
-        skin_prob_crcb_link = "resources/skin_color_segmentation/saved_histograms/skin_probabilities_crcb.npy"
-        thresh_crcb = 10
-        self.skin_prob_binary_crcb = gesture.get_lab_skin_hist(thresh_crcb, skin_prob_crcb_link)
+        self.aT = .5
 
     def get_trained_gwr(self, link_to_data):
         gwr_weights = np.load(link_to_data + "/weights.npy")
         gwr_edges = np.load(link_to_data + "/edges.npy")
         gwr_labels = np.load(link_to_data + "/labels.npy")
         error_count = np.load(link_to_data + "/error_count.npy")
-
         return gwr_weights, gwr_edges, gwr_labels, error_count
 
     def predict_live(self, gwr_input):
@@ -98,8 +92,8 @@ class GWRInterface(object):
         return np.linalg.norm(x - y)
 
     def convert_bb_to_pxv(self, bb):
-        return [int(bb[0] * self.frame_dimensions[1]), int(bb[1] * self.frame_dimensions[0]),
-                int(bb[2] * self.frame_dimensions[1]), int(bb[3] * self.frame_dimensions[0])]
+        return [int(bb[0] * self.frame_dims[1]), int(bb[1] * self.frame_dims[0]),
+                int(bb[2] * self.frame_dims[1]), int(bb[3] * self.frame_dims[0])]
 
     def normalize_with_fixed_min_max(self, data_set, dimensions):
         n_data_set = np.copy(data_set)
@@ -255,7 +249,7 @@ class GWRInterface(object):
             corres_image = cv.imread("resources/current_training/bb_test/all_obj_permutations/" + filename + ".jpg")
 
             frame_ycrcb = cv.cvtColor(corres_image, cv.COLOR_BGR2YCrCb)
-            skin_binary = gesture.apply_skin_hist2d(frame_ycrcb, self.skin_prob_binary_crcb)
+            skin_binary = gesture.apply_skin_hist2d(frame_ycrcb, self.skin_model)
             frame, hand_positions_t0, tracking_state = state.detection_step(corres_image, skin_binary, [None, None],
                                                                             "None")
             # saves outcome for visualizations
@@ -408,14 +402,12 @@ class GWRInterface(object):
     def visualize_gwr(self):
         pass
 
-    def get_no_edges(self):
+    def count_edges(self):
         no_edges = 0
-
         u_edges = np.triu(self.edges)
         for i in range(0, u_edges.shape[0]):
             neighbors = np.nonzero(u_edges[i])
             no_edges += len(neighbors[0])
-
         return no_edges
 
     def visualize_error(self, title):

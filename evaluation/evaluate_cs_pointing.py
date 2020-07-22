@@ -8,7 +8,7 @@ def calc_raw_confusion_data(data, side_data, dimensions):
     # Bayesian Hist
     skin_prob_crcb_link = "resources/skin_color_data/histograms/skin_probabilities_crcb.npy"
     thresh_crcb = 10
-    skin_prob_binary_crcb = gesture.get_lab_skin_hist(thresh_crcb, skin_prob_crcb_link)
+    skin_prob_binary_crcb = gesture.get_skin_histogram(thresh_crcb, skin_prob_crcb_link)
 
     sample_count = data.shape[0]
 

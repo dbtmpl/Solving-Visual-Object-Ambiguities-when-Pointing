@@ -4,26 +4,13 @@ import numpy as np
 
 import engine.gesture_detection as gesture
 import engine.state_model as state
-import engine.object_detection as obj_d
 from engine.gwr_interface import GWRInterface
-
-
-def get_crop_heuristics(first_frame_shape):
-    # percentages to crop the input image. See Figure 3 in paper.
-    crops_y = int(first_frame_shape[0] - np.ceil((first_frame_shape[0] * 0.12037)))
-    crops_x1 = int(np.ceil((first_frame_shape[1] * 0.3125)))
-    crops_x2 = int(first_frame_shape[1] - np.ceil((first_frame_shape[1] * 0.3457)))
-
-    return crops_y, crops_x1, crops_x2
-
-
-def crop_and_resize(frame, crops_y, crops_x1, crops_x2):
-    frame = frame[0:crops_y, crops_x1:crops_x2]
-    return cv.resize(frame, (int((crops_x2 - crops_x1) / 2), int(crops_y / 2)))
+from utils.general_utils import get_crop_heuristics, crop_and_resize
+from utils.detection_utils import detect_objects_in_frame
 
 
 def run_demo(ARGS):
-    skin_prob_binary_crcb = gesture.get_lab_skin_hist(thresh=10, path=ARGS.skin_model)
+    skin_prob_binary_crcb = gesture.get_skin_histogram(path=ARGS.skin_model)
 
     # Load video
     cap = cv.VideoCapture(ARGS.demo_video)
@@ -37,21 +24,22 @@ def run_demo(ARGS):
     ret, first_frame = cap.read()
     first_frame_shape = first_frame.shape
 
+    # Get crop parameters for frame crop
     crops_y, crops_x1, crops_x2 = get_crop_heuristics(first_frame_shape)
     first_frame = crop_and_resize(first_frame, crops_y, crops_x1, crops_x2)
 
     # initialize gwr for predicting
-    path_gwr = ARGS.gwr_model
-    gwr = GWRInterface(path_gwr, first_frame.shape)
+    gwr = GWRInterface(ARGS.gwr_model, ARGS.skin_model, first_frame.shape)
 
     # 2D list: stores the last 5 values of hand features for calculating the mean
     # 1. fingertip, 2. p3, 3. gwr_angle
     mean_aver = [[], [], []]
 
+    object_bb = []
+
     # while not pressing esc
     while cv.waitKey(30) & 0xFF != ord('q'):
         ret, frame = cap.read()
-
         if ret:
             # cropping and resizing of 4K Video
             frame = crop_and_resize(frame, crops_y, crops_x1, crops_x2)
@@ -59,16 +47,8 @@ def run_demo(ARGS):
             # convert to ycrcb
             frame_ycrcb = cv.cvtColor(frame, cv.COLOR_BGR2YCrCb)
 
-            # detect objects in scene for pointing array approach
-            object_bb = []
             if pointing_estimation:
-                detected_objects = obj_d.detect_objects(frame, hand_positions_t0)
-                for i, d_object in enumerate(detected_objects):
-                    if d_object is not None:
-                        bb, color_str, color_int = d_object
-                        cv.rectangle(frame, (bb[0], bb[1]), (bb[2], bb[3]), (0, 255, 0), 2, cv.LINE_AA)
-                        object_bb.append(
-                            [color_str, (bb[0], bb[1], bb[2] - bb[0], bb[3] - bb[1]), bb])
+                object_bb = detect_objects_in_frame(frame, hand_positions_t0)
 
             # Get initial skin binary
             skin_binary = gesture.apply_skin_hist2d(frame_ycrcb, skin_prob_binary_crcb)
@@ -130,7 +110,7 @@ if __name__ == '__main__':
     parser.add_argument(
         '--gwr-model',
         type=str,
-        default="results/gwr_based_approach/gwr_models_and_results/normalized_for_demo_90_30e/",
+        default="resources/gwr_models/model_demo",
         help="Path to the GWR model (Not used when using pointing array for prediction)"
     )
     parser.add_argument(
