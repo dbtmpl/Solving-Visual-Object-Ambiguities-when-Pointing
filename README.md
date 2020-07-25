@@ -79,5 +79,5 @@ Special thanks to [German Parisi](https://twitter.com/germanparisi) for all the 
 
 ---
 
-Note: The code this work is based on was developed during my bachelor thesis in 2018 at University of Hamburg.
+Note: The code on which this work is based was developed during my bachelor thesis in 2018 at the University of Hamburg.
 
