@@ -309,20 +309,30 @@ def calc_centroid_of_points(points):
     return sum_x / length, sum_y / length
 
 
-def calc_tracking_roi(source, target, padding, bounds):
+def calc_tracking_roi(source, padding, bounds):
     x_0, y_0, w_0, h_0 = bounds
+    target = np.zeros(source.shape, np.uint8)
 
-    target[max(0, y_0 - padding): min(y_0 + h_0 + padding, 600),
-    max(0, x_0 - padding): min(x_0 + w_0 + padding, 800)] = source[
-                                                            max(0, y_0 - padding): min(y_0 + h_0 + padding,
-                                                                                       600),
-                                                            max(0, x_0 - padding): min(x_0 + w_0 + padding,
-                                                                                       800)]
+    crop_max_x, crop_max_y = max(0, x_0 - padding), max(0, y_0 - padding)
+    crop_min_x, crop_min_y = min(x_0 + w_0 + padding, 800), min(y_0 + h_0 + padding, 600)
+    target[crop_max_y: crop_min_y, crop_max_x: crop_min_x] = source[crop_max_y: crop_min_y, crop_max_x: crop_min_x]
 
     return target
 
 
+# def calc_tracking_roi(source, target, padding, bounds):
+#     x_0, y_0, w_0, h_0 = bounds
 #
+#     target[max(0, y_0 - padding): min(y_0 + h_0 + padding, 600),
+#     max(0, x_0 - padding): min(x_0 + w_0 + padding, 800)] = source[
+#                                                             max(0, y_0 - padding): min(y_0 + h_0 + padding,
+#                                                                                        600),
+#                                                             max(0, x_0 - padding): min(x_0 + w_0 + padding,
+#                                                                                        800)]
+#
+#     return target
+
+
 def calc_line(p1, p2):
     """
     Calculates line from two points p1 and p2 by

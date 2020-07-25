@@ -39,42 +39,34 @@ def detection_step(frame, skin_binary, hand_positions_t0, tracking_state):
         return frame, hand_positions_t0, tracking_state
 
 
-def search_new_hand_cnts(skin_binary, mask_1, mask_2, mask_result, hand_positions_t0, tracking_state):
+def search_new_hand_cnts(skin_binary, hand_positions_t0, tracking_state):
+    # create frames beforehand for debugging
+    mask_1 = np.zeros(skin_binary.shape, np.uint8)
+    mask_2 = np.zeros(skin_binary.shape, np.uint8)
+
     if tracking_state == "One":
-        x_0, y_0, w_0, h_0 = hand_positions_t0[0]
-
+        # create search window bigger than bounding box around the hand
         padding = 30
-        mask_1 = gesture.calc_tracking_roi(skin_binary, mask_1, padding, (x_0, y_0, w_0, h_0))
-        skin_binary = gesture.calc_tracking_roi(mask_2, skin_binary, padding, (x_0, y_0, w_0, h_0))
-
-        mask_result = cv.bitwise_or(mask_1, skin_binary)
+        mask_result = gesture.calc_tracking_roi(skin_binary, padding, hand_positions_t0[0])
 
     elif tracking_state == "Two":
-
-        x_0, y_0, w_0, h_0 = hand_positions_t0[0]
-        x_1, y_1, w_1, h_1 = hand_positions_t0[1]
-
         # create search window bigger than bounding box around the hand
         padding = 30
 
-        mask_1 = gesture.calc_tracking_roi(skin_binary, mask_1, padding, (x_0, y_0, w_0, h_0))
-        mask_2 = gesture.calc_tracking_roi(skin_binary, mask_2, padding, (x_1, y_1, w_1, h_1))
-
+        mask_1 = gesture.calc_tracking_roi(skin_binary, mask_1, padding, hand_positions_t0[0])
+        mask_2 = gesture.calc_tracking_roi(skin_binary, mask_2, padding, hand_positions_t0[1])
         mask_result = cv.bitwise_or(mask_1, mask_2)
 
     blur = cv.GaussianBlur(mask_result, (11, 11), 0)
-    ret, thresh = cv.threshold(blur, 100, 255, cv.THRESH_BINARY)
+    _, thresh = cv.threshold(blur, 100, 255, cv.THRESH_BINARY)
 
-    # Detect one or two hands
-    # One
     cnts = gesture.get_biggest_contours(thresh, 40)
-    # Two
     # cnts = gesture.get_biggest_two_contours(thresh, 40)
 
-    return cnts, skin_binary, thresh, [mask_result, blur]
+    return cnts, thresh
 
 
-def tracking_one_hand(frame, cnts, thresh, hand_positions_t0, object_bb, mean_aver, gwr, pointing_estimation):
+def tracking_one_hand(frame, cnts, thresh, hand_positions_t0, object_bb, gwr, pointing_estimation):
     hand = cnts[0]
 
     frame2 = frame.copy()
@@ -115,7 +107,7 @@ def tracking_one_hand(frame, cnts, thresh, hand_positions_t0, object_bb, mean_av
     return frame, frame2, tracking_state, thresh
 
 
-def tracking_two_hands(frame, cnts, thresh, hand_positions_t0, object_bb, mean_aver, gwr, pointing_estimation):
+def tracking_two_hands(frame, cnts, thresh, hand_positions_t0, object_bb, gwr, pointing_estimation):
     hand_1 = cnts[0]
     hand_2 = cnts[1]
 

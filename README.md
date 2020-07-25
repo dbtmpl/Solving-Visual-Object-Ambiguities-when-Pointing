@@ -3,9 +3,11 @@
 
 This repository provides the official implementation of the paper:
 > **[Solving visual object ambiguities when pointing: an unsupervised learning approach](https://link.springer.com/article/10.1007/s00521-020-05109-w) (Neural Computing and Applications 2020)**<br>
-> *[Doreen Jirak](https://scholar.google.com/citations?user=-HgMDDYAAAAJ&hl), †[David Biertimpel](https://www.linkedin.com/in/david-biertimpel/), ‡[Matthias Kerzel](https://www.inf.uni-hamburg.de/en/inst/ab/wtm/people/kerzel.html) and ‡[Stefan Wermter](https://www.inf.uni-hamburg.de/en/inst/ab/wtm/people/wermter.html) <br>
-> *Istituto Italiano di Tecnologia, †University of Amsterdam, ‡University of Hamburg<br>
-> pre-print : https://arxiv.org/abs/1912.06449
+> *‡[Doreen Jirak](https://scholar.google.com/citations?user=-HgMDDYAAAAJ&hl), †[David Biertimpel](https://www.linkedin.com/in/david-biertimpel/), *[Matthias Kerzel](https://www.inf.uni-hamburg.de/en/inst/ab/wtm/people/kerzel.html) and *[Stefan Wermter](https://www.inf.uni-hamburg.de/en/inst/ab/wtm/people/wermter.html) <br>
+> *University of Hamburg, †University of Amsterdam, ‡Istituto Italiano di Tecnologia<br>
+> pre-print : https://arxiv.org/abs/1912.06449 <br>
+> Note: Work was conducted at University of Hamburg <br>
+
 
 <img width="80%" src="https://raw.githubusercontent.com/d4vidbiertmpl/Bachelors-thesis/master/demo_media/demo_images/scenario_overview.png">
 
@@ -23,7 +25,7 @@ The `demo.py` comes with a few parameters:
 
 The default parameters put in place allow running `python demo.py` for the GWR- and `python demo.py --use-pointing-array` for the pointing-array based approach. A demo run with all parameters specified looks as follows:
 ```Example-run
-python demo.py --gwr-model "results/gwr_based_approach/gwr_models_and_results/normalized_for_demo_90_30e/" \
+python demo.py --gwr-model "resources/gwr_models/model_demo" \
                --skin-model "resources/skin_color_segmentation/saved_histograms/skin_probabilities_crcb.npy" \
                --demo-video "resources/test_videos/amb1_o3_r1_m.webm" \
                --use-pointing-array             
@@ -56,6 +58,10 @@ doi={10.1007/s00521-020-05109-w},
 url={https://doi.org/10.1007/s00521-020-05109-w}
 }
 ```
+
+## Acknowledgement
+Special thanks to [German Parisi](https://twitter.com/germanparisi) for all the fruitful discussions about the GWR and its possible applications for gesture recognition.
+
 
 ## Further Visualizations
 ### Unambiguous

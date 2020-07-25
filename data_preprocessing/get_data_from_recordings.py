@@ -1,11 +1,13 @@
-import cv2 as cv
-import matplotlib.pyplot as plt
-from matplotlib.pyplot import *
-import csv
 import ast
+import csv
 import glob
 
+import numpy as np
+import cv2 as cv
+import matplotlib.pyplot as plt
+
 from engine.calculate_hand_features import GWR_Hand_Features
+from utils.general_utils import get_crop_heuristics, crop_and_resize
 
 
 class RecordGWRData(object):
@@ -44,13 +46,8 @@ class RecordGWRData(object):
 
     def get_crops(self):
         cap = self.data[0]
-        ret, frame_t1 = cap.read()
-        f_shape = frame_t1.shape
-        # percentages of empirical cropped image
-        crops_y = int(f_shape[0] - np.ceil((f_shape[0] * 0.12037)))
-        crops_x1 = int(np.ceil((f_shape[1] * 0.3125)))
-        crops_x2 = int(f_shape[1] - np.ceil((f_shape[1] * 0.3457)))
-        return crops_y, crops_x1, crops_x2
+        _, frame_t1 = cap.read()
+        return get_crop_heuristics(frame_t1)
 
     def get_x_frames(self):
         save_link = "resources/current_training/bb_test/all_obj_permutations/"
@@ -60,8 +57,7 @@ class RecordGWRData(object):
             cap.set(cv.CAP_PROP_POS_FRAMES, 40)
             ret, frame = cap.read()
             if ret:
-                frame = frame[0:self.crops[0], self.crops[1]:self.crops[2]]
-                frame = cv.resize(frame, ((self.crops[2] - self.crops[1]) / 2, self.crops[0] / 2))
+                frame = crop_and_resize(frame, self.crops)
                 cv.imwrite(save_link + filename + ".jpg", frame)
 
     def check_data(self):
@@ -80,8 +76,7 @@ class RecordGWRData(object):
                     cap.set(cv.CAP_PROP_POS_FRAMES, start_pointing - 1)
                     ret, frame = cap.read()
 
-                    frame = frame[0:self.crops[0], self.crops[1]:self.crops[2]]
-                    frame = cv.resize(frame, ((self.crops[2] - self.crops[1]) / 2, self.crops[0] / 2))
+                    frame = crop_and_resize(frame, self.crops)
 
                     if j == 0:
                         cv.rectangle(frame, box[0], box[1], (0, 0, 255), 3)
@@ -140,7 +135,6 @@ class RecordGWRData(object):
         side_data = []
 
         for i, cap in enumerate(self.data):
-            print(i)
             row = self.data_labels[i]
             pointings = self.convert_bb_to_percentages(row[1:])
             filename = row[0]
@@ -154,8 +148,7 @@ class RecordGWRData(object):
                     while start_pointing <= end_pointing:
                         ret, frame = cap.read()
                         if ret:
-                            frame = frame[0:self.crops[0], self.crops[1]:self.crops[2]]
-                            frame = cv.resize(frame, ((self.crops[2] - self.crops[1]) / 2, self.crops[0] / 2))
+                            frame = crop_and_resize(frame, self.crops)
 
                             # capture gwr feature vector
                             fingertip, p3 = self.gwr_hf.get_cs_pointing_data(frame)
@@ -202,8 +195,7 @@ class RecordGWRData(object):
                     while start_pointing <= end_pointing:
                         ret, frame = cap.read()
                         if ret:
-                            frame = frame[0:self.crops[0], self.crops[1]:self.crops[2]]
-                            frame = cv.resize(frame, ((self.crops[2] - self.crops[1]) / 2, self.crops[0] / 2))
+                            frame = crop_and_resize(frame, self.crops)
 
                             # capture gwr feature vector
                             angle, icx, icy, f, last_five_angles = self.gwr_hf.get_gwr_data(frame, last_five_angles)
@@ -312,11 +304,7 @@ class RecordGWRData(object):
         return n_data_set
 
     def visualize_data(self, data_set, link_data, name):
-        x = data_set[:, 0]
-        y = data_set[:, 1]
-        z = data_set[:, 2]
-        a = data_set[:, 3]
-        b = data_set[:, 4]
+        x, y, z, a, b = data_set[:, 0], data_set[:, 1], data_set[:, 2], data_set[:, 3], data_set[:, 4]
 
         # colors = {0: 'b', 1: 'y', 2: 'r'}
 

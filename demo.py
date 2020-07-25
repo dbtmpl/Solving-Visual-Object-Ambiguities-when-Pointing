@@ -9,98 +9,95 @@ from utils.general_utils import get_crop_heuristics, crop_and_resize
 from utils.detection_utils import detect_objects_in_frame
 
 
-def run_demo(ARGS):
-    skin_prob_binary_crcb = gesture.get_skin_histogram(path=ARGS.skin_model)
+class GestureDemo:
 
-    # Load video
-    cap = cv.VideoCapture(ARGS.demo_video)
+    def __init__(self, ARGS):
+        self.skin_model = gesture.get_skin_histogram(path=ARGS.skin_model)
 
-    pointing_estimation = ARGS.use_pointing_array
+        # Load video
+        self.cap = cv.VideoCapture(ARGS.demo_video)
 
-    # three states are possible: State 0: None, State 1: One, State 2: Two
-    tracking_state, hand_positions_t0, frame_counter = "None", [None, None], 0
+        # If true uses the pointing array technique
+        self.pointing_estimation = ARGS.use_pointing_array
 
-    # take first frame and get shape
-    ret, first_frame = cap.read()
-    first_frame_shape = first_frame.shape
+        # three states are possible: State 0: None, State 1: One, State 2: Two
+        self.tracking_state = 'None'
+        self.hand_positions_t0 = [None, None]
 
-    # Get crop parameters for frame crop
-    crops_y, crops_x1, crops_x2 = get_crop_heuristics(first_frame_shape)
-    first_frame = crop_and_resize(first_frame, crops_y, crops_x1, crops_x2)
+        # take first frame and get shape
+        _, frame = self.cap.read()
+        self._crops = get_crop_heuristics(frame)
+        frame = crop_and_resize(frame, self._crops)
 
-    # initialize gwr for predicting
-    gwr = GWRInterface(ARGS.gwr_model, ARGS.skin_model, first_frame.shape)
+        # initialize gwr for predicting
+        self.gwr = GWRInterface(ARGS.gwr_model, ARGS.skin_model, frame.shape)
 
-    # 2D list: stores the last 5 values of hand features for calculating the mean
-    # 1. fingertip, 2. p3, 3. gwr_angle
-    mean_aver = [[], [], []]
+        # Current bounding boxes in the scene
+        self.object_bb = []
 
-    object_bb = []
+    def process_frame(self, frame):
+        # cropping and resizing current frame
+        frame_cropped = crop_and_resize(frame, self._crops)
+        frame_ycrcb = cv.cvtColor(frame_cropped, cv.COLOR_BGR2YCrCb)
+        # Get initial skin binary
+        skin_binary = gesture.apply_skin_hist2d(frame_ycrcb, self.skin_model)
 
-    # while not pressing esc
-    while cv.waitKey(30) & 0xFF != ord('q'):
-        ret, frame = cap.read()
-        if ret:
-            # cropping and resizing of 4K Video
-            frame = crop_and_resize(frame, crops_y, crops_x1, crops_x2)
+        return skin_binary, frame_cropped
 
-            # convert to ycrcb
-            frame_ycrcb = cv.cvtColor(frame, cv.COLOR_BGR2YCrCb)
+    def run_iteration(self, frame):
+        skin_binary, frame = self.process_frame(frame)
+        if self.pointing_estimation:
+            self.object_bb = detect_objects_in_frame(frame, self.hand_positions_t0)
 
-            if pointing_estimation:
-                object_bb = detect_objects_in_frame(frame, hand_positions_t0)
+        if self.tracking_state in ["One", "Two"]:
 
-            # Get initial skin binary
-            skin_binary = gesture.apply_skin_hist2d(frame_ycrcb, skin_prob_binary_crcb)
+            cnts, thresh = state.search_new_hand_cnts(skin_binary, self.hand_positions_t0, self.tracking_state)
 
-            # create frames beforehand for debugging
-            mask_result = np.zeros(skin_binary.shape, np.uint8)
-            mask_1 = np.zeros(skin_binary.shape, np.uint8)
-            mask_2 = np.zeros(skin_binary.shape, np.uint8)
+            if cnts is not None:
+                if len(cnts) == 1:
+                    frame, frame2, self.tracking_state, thresh = state.tracking_one_hand(
+                        frame, cnts, thresh, self.hand_positions_t0, self.object_bb, self.gwr,
+                        self.pointing_estimation
+                    )
 
-            if tracking_state == "One" or tracking_state == "Two":
-
-                cnts, skin_binary, thresh, prep_steps = state.search_new_hand_cnts(
-                    skin_binary, mask_1, mask_2, mask_result, hand_positions_t0, tracking_state
-                )
-
-                if cnts is not None:
-
-                    if len(cnts) == 1:
-                        frame, frame2, tracking_state, thresh = state.tracking_one_hand(
-                            frame, cnts, thresh, hand_positions_t0, object_bb, mean_aver, gwr, pointing_estimation
-                        )
-                        frame_counter += 1
-
-                    elif len(cnts) == 2:
-                        frame, frame2, tracking_state, thresh = state.tracking_two_hands(
-                            frame, cnts, thresh, hand_positions_t0, object_bb, mean_aver, gwr, pointing_estimation
-                        )
-                        frame_counter += 1
-
-                else:
-                    tracking_state = "None"
-                    frame_counter += 1
+                elif len(cnts) == 2:
+                    frame, frame2, self.tracking_state, thresh = state.tracking_two_hands(
+                        frame, cnts, thresh, self.hand_positions_t0, self.object_bb, self.gwr,
+                        self.pointing_estimation
+                    )
 
             else:
-                # when tracking is lost
-                frame, hand_positions_t0, tracking_state = state.detection_step(
-                    frame, skin_binary, hand_positions_t0, tracking_state
-                )
-                frame_counter += 1
+                self.tracking_state = "None"
 
-            # for saving frames for visualizations
+        else:
+            # when tracking is lost
+            frame, self.hand_positions_t0, self.tracking_state = state.detection_step(
+                frame, skin_binary, self.hand_positions_t0, self.tracking_state
+            )
+
+        return frame
+
+    def run_demo(self):
+        frame_counter = 0
+        # while not pressing esc
+        while cv.waitKey(30) & 0xFF != ord('q'):
+            ret, frame = self.cap.read()
+
+            if not ret:
+                self.cap.release()
+                cv.destroyAllWindows()
+                return False
+
+            frame = self.run_iteration(frame)
+
+            # Saving frames for visualizations
             k = cv.waitKey(10)
             if k == ord('p'):
                 cv.imwrite(f"frame_{frame_counter}.jpg", frame)
-            frame_counter += 1
 
             # Show
-            cv.imshow("original", frame)
-
-        else:
-            cap.release()
-            cv.destroyAllWindows()
+            cv.imshow("HRI Scene", frame)
+            frame_counter += 1
 
 
 if __name__ == '__main__':
@@ -132,4 +129,5 @@ if __name__ == '__main__':
     )
 
     ARGS = parser.parse_args()
-    run_demo(ARGS)
+    gesture_demo = GestureDemo(ARGS)
+    gesture_demo.run_demo()
