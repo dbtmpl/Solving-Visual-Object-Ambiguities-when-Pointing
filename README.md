@@ -6,8 +6,7 @@ This repository provides the official implementation of the paper:
 > *‡[Doreen Jirak](https://scholar.google.com/citations?user=-HgMDDYAAAAJ&hl), *†[David Biertimpel](https://www.linkedin.com/in/david-biertimpel/), *[Matthias Kerzel](https://www.inf.uni-hamburg.de/en/inst/ab/wtm/people/kerzel.html) and *[Stefan Wermter](https://www.inf.uni-hamburg.de/en/inst/ab/wtm/people/wermter.html) <br>
 > *University of Hamburg, †University of Amsterdam, ‡Istituto Italiano di Tecnologia<br>
 > pre-print : https://arxiv.org/abs/1912.06449 <br>
-
-Note: Research was conducted at University of Hamburg
+> Note: Research was conducted at University of Hamburg <br>
 
 <img width="80%" src="https://raw.githubusercontent.com/d4vidbiertmpl/Bachelors-thesis/master/demo_media/demo_images/scenario_overview.png">
 
