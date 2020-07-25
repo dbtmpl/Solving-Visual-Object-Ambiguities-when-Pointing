@@ -94,6 +94,11 @@ def get_contour_centroid(contour):
 
 
 def filter_defects_and_hull(cnt):
+    """
+    Calculate convex hull and convexity defects. Filter noisy convexity defects by depth.
+    :param cnt: OpenCV contour
+    :return: Tuple: Convex Hull and filtered convexity defects
+    """
     # indices of hull points
     hull = cv.convexHull(cnt, returnPoints=False)
 
@@ -318,19 +323,6 @@ def calc_tracking_roi(source, padding, bounds):
     target[crop_max_y: crop_min_y, crop_max_x: crop_min_x] = source[crop_max_y: crop_min_y, crop_max_x: crop_min_x]
 
     return target
-
-
-# def calc_tracking_roi(source, target, padding, bounds):
-#     x_0, y_0, w_0, h_0 = bounds
-#
-#     target[max(0, y_0 - padding): min(y_0 + h_0 + padding, 600),
-#     max(0, x_0 - padding): min(x_0 + w_0 + padding, 800)] = source[
-#                                                             max(0, y_0 - padding): min(y_0 + h_0 + padding,
-#                                                                                        600),
-#                                                             max(0, x_0 - padding): min(x_0 + w_0 + padding,
-#                                                                                        800)]
-#
-#     return target
 
 
 def calc_line(p1, p2):

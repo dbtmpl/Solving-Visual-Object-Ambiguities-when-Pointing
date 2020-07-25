@@ -3,10 +3,10 @@
 
 This repository provides the official implementation of the paper:
 > **[Solving visual object ambiguities when pointing: an unsupervised learning approach](https://link.springer.com/article/10.1007/s00521-020-05109-w) (Neural Computing and Applications 2020)**<br>
-> *‡[Doreen Jirak](https://scholar.google.com/citations?user=-HgMDDYAAAAJ&hl), †[David Biertimpel](https://www.linkedin.com/in/david-biertimpel/), *[Matthias Kerzel](https://www.inf.uni-hamburg.de/en/inst/ab/wtm/people/kerzel.html) and *[Stefan Wermter](https://www.inf.uni-hamburg.de/en/inst/ab/wtm/people/wermter.html) <br>
+> *‡[Doreen Jirak](https://scholar.google.com/citations?user=-HgMDDYAAAAJ&hl), *†[David Biertimpel](https://www.linkedin.com/in/david-biertimpel/), *[Matthias Kerzel](https://www.inf.uni-hamburg.de/en/inst/ab/wtm/people/kerzel.html) and *[Stefan Wermter](https://www.inf.uni-hamburg.de/en/inst/ab/wtm/people/wermter.html) <br>
 > *University of Hamburg, †University of Amsterdam, ‡Istituto Italiano di Tecnologia<br>
 > pre-print : https://arxiv.org/abs/1912.06449 <br>
-> Note: Work was conducted at University of Hamburg <br>
+> Note: Research was conducted at University of Hamburg<br>
 
 
 <img width="80%" src="https://raw.githubusercontent.com/d4vidbiertmpl/Bachelors-thesis/master/demo_media/demo_images/scenario_overview.png">
@@ -80,4 +80,5 @@ Special thanks to [German Parisi](https://twitter.com/germanparisi) for all the 
 
 ---
 
-Note: The code this work is based on was developed during my bachelor thesis in summer 2018.
+Note: The code this work is based on was developed during my bachelor thesis in 2018 at University of Hamburg.
+
