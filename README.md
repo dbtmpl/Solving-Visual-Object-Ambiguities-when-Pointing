@@ -3,7 +3,7 @@
 
 This repository provides the official implementation of the paper:
 > **[Solving visual object ambiguities when pointing: an unsupervised learning approach](https://link.springer.com/article/10.1007/s00521-020-05109-w) (Neural Computing and Applications 2020)**<br>
-> *‡[Doreen Jirak](https://scholar.google.com/citations?user=-HgMDDYAAAAJ&hl), *†[David Biertimpel](https://www.linkedin.com/in/david-biertimpel/), *[Matthias Kerzel](https://www.inf.uni-hamburg.de/en/inst/ab/wtm/people/kerzel.html) and *[Stefan Wermter](https://www.inf.uni-hamburg.de/en/inst/ab/wtm/people/wermter.html) <br>
+> *‡[Doreen Jirak](https://scholar.google.com/citations?user=-HgMDDYAAAAJ&hl), *†[David Biertimpel](https://twitter.com/dbtmpl), *[Matthias Kerzel](https://www.inf.uni-hamburg.de/en/inst/ab/wtm/people/kerzel.html) and *[Stefan Wermter](https://www.inf.uni-hamburg.de/en/inst/ab/wtm/people/wermter.html) <br>
 > *University of Hamburg, ‡Istituto Italiano di Tecnologia, †University of Amsterdam<br>
 > pre-print : https://arxiv.org/abs/1912.06449 <br>
 > Note: Research was conducted at University of Hamburg <br>
@@ -79,5 +79,5 @@ Special thanks to [German Parisi](https://twitter.com/germanparisi) for all the 
 
 ---
 
-Note: The code on which this work is based was developed during my bachelor thesis in 2018 at the University of Hamburg.
+Note: The code this work is based on was developed during my bachelor thesis at the University of Hamburg (2018).
 
