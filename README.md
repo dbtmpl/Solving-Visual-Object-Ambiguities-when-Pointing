@@ -2,7 +2,7 @@
 [![Python 3.8](https://img.shields.io/badge/Python-3.8-3776AB.svg?logo=python)](https://www.python.org/) [![NumPy 1.18.5](https://img.shields.io/badge/NumPy-1.18.5-blue)](https://numpy.org/doc/1.18/) [![OpenCV 4.3.0](https://img.shields.io/badge/OpenCV-4.3.0-brightgreen)](https://docs.opencv.org/4.3.0/) [![MIT](https://img.shields.io/badge/License-MIT-3DA639.svg?logo=open-source-initiative)](LICENSE)
 
 This repository provides the official implementation of the paper:
-> **[Solving visual object ambiguities when pointing: an unsupervised learning approach](https://link.springer.com/article/10.1007/s00521-020-05109-w) (Neural Computing and Applications 2020)**<br>
+> **[Solving Visual Object Ambiguities when Pointing: An Unsupervised Learning Approach](https://link.springer.com/article/10.1007/s00521-020-05109-w) (Neural Computing and Applications 2020)**<br>
 > *‡[Doreen Jirak](https://scholar.google.com/citations?user=-HgMDDYAAAAJ&hl), *†[David Biertimpel](https://twitter.com/dbtmpl), *[Matthias Kerzel](https://www.inf.uni-hamburg.de/en/inst/ab/wtm/people/kerzel.html) and *[Stefan Wermter](https://www.inf.uni-hamburg.de/en/inst/ab/wtm/people/wermter.html) <br>
 > *University of Hamburg, ‡Istituto Italiano di Tecnologia, †University of Amsterdam<br>
 > pre-print : https://arxiv.org/abs/1912.06449 <br>
